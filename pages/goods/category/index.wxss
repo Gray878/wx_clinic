@@ -1,0 +1,40 @@
+.tabbar-position {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.wrap {
+  height: 100%;
+  overflow: hidden;
+}
+.goods-category-class {
+  height: calc(100vh - 112rpx);
+  background-color: #fff !important;
+}
+.goods-category-class .goods-category-normal-item-container-item {
+  margin-top: 20rpx;
+}
+
+page {
+  height: 100%;
+  background-color: #fff;
+  min-height: none;
+  padding-bottom: 0;
+}
+
+.search-wrap {
+  padding: 24rpx;
+  background-color: #fff;
+}
+
+.t-search__input-container {
+  border-radius: 32rpx !important;
+  height: 64rpx !important;
+}
+
+.t-search__input {
+  font-size: 28rpx !important;
+  color: rgb(116, 116, 116) !important;
+}

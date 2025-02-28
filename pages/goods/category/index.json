@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "分类",
+  "usingComponents": {
+    "t-search": "tdesign-miniprogram/search/search",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "goods-category": "./components/goods-category/index"
+  }
+}

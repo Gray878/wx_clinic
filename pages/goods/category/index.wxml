@@ -1,0 +1,15 @@
+<view class="wrap">
+  <view class="search-wrap">
+    <t-search
+      t-class-input="t-search__input"
+      t-class-input-container="t-search__input-container"
+      placeholder="请输入商品名称"
+      leftIcon=""
+      bind:tap="navToSearchPage"
+    >
+      <t-icon slot="left-icon" prefix="wr" name="search" size="40rpx" color="#bbb" />
+    </t-search>
+  </view>
+  <goods-category level="{{2}}" custom-class="goods-category-class" category="{{cates}}" bind:changeCategory="onChange" />
+  <t-toast id="t-toast" />
+</view>

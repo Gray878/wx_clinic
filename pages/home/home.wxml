@@ -1,0 +1,24 @@
+<view style="text-align: center; color: #b9b9b9" wx:if="{{pageLoading}}">
+  <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
+</view>
+<view class="home-page-header">
+  <view class="notice-bar">
+    <t-notice-bar
+      visible="{{true}}"
+      prefixIcon="{{false}}"
+      content="客服上班时间上午8:00~晚上23:00"
+      t-class="notice-bar__inner"
+      t-class-content="notice-bar__content"
+    >
+      <t-icon slot="prefix-icon" name="notification" size="44rpx" />
+    </t-notice-bar>
+  </view>
+  <view class="swiper-wrap">
+    <t-swiper wx:if="{{imgSrcs.length > 0}}" current="{{current}}" autoplay="{{autoplay}}" duration="{{duration}}" interval="{{interval}}" navigation="{{navigation}}" imageProps="{{swiperImageProps}}" list="{{imgSrcs}}" />
+  </view>
+</view>
+<view class="home-page-container">
+  <goods-list wr-class="goods-list-container" goodsList="{{goodsList}}" bind:click="goodListClickHandle" bind:addcart="goodListAddCartHandle" />
+  <load-more list-is-empty="{{!goodsList.length}}" status="{{goodsListLoadStatus}}" bind:retry="onReTry" />
+  <t-toast id="t-toast" />
+</view>
