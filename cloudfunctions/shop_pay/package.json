@@ -1,0 +1,15 @@
+{
+  "name": "shop_pay",
+  "version": "1.0.0",
+  "description": "云开发服务支付订单",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cloudbase/node-sdk": "3.2",
+    "wx-server-sdk": "~2.4.0"
+  }
+}

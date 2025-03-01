@@ -1,7 +1,9 @@
 <view style="text-align: center; color: #b9b9b9" wx:if="{{pageLoading}}">
   <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
 </view>
-<view class="home-page-header">
+
+<view class="home-page">
+  <!-- 通知栏 -->
   <view class="notice-bar">
     <t-notice-bar
       visible="{{true}}"
@@ -13,12 +15,37 @@
       <t-icon slot="prefix-icon" name="notification" size="44rpx" />
     </t-notice-bar>
   </view>
+
+  <!-- 轮播图 -->
   <view class="swiper-wrap">
-    <t-swiper wx:if="{{imgSrcs.length > 0}}" current="{{current}}" autoplay="{{autoplay}}" duration="{{duration}}" interval="{{interval}}" navigation="{{navigation}}" imageProps="{{swiperImageProps}}" list="{{imgSrcs}}" />
+    <t-swiper 
+      wx:if="{{imgSrcs.length > 0}}" 
+      current="{{current}}" 
+      autoplay="{{autoplay}}" 
+      duration="{{duration}}" 
+      interval="{{interval}}" 
+      navigation="{{navigation}}" 
+      imageProps="{{swiperImageProps}}" 
+      list="{{imgSrcs}}" 
+    />
   </view>
-</view>
-<view class="home-page-container">
-  <goods-list wr-class="goods-list-container" goodsList="{{goodsList}}" bind:click="goodListClickHandle" bind:addcart="goodListAddCartHandle" />
-  <load-more list-is-empty="{{!goodsList.length}}" status="{{goodsListLoadStatus}}" bind:retry="onReTry" />
+
+  <!-- 城市选择区域 -->
+  <view class="city-selection">
+    <view class="section-title">选择城市</view>
+    <view class="city-list">
+      <view class="city-item {{currentCity === '广州' ? 'active' : ''}}" bindtap="selectCity" data-city="广州">广州</view>
+      <view class="city-item {{currentCity === '佛山' ? 'active' : ''}}" bindtap="selectCity" data-city="佛山">佛山</view>
+      <view class="city-item {{currentCity === '惠州' ? 'active' : ''}}" bindtap="selectCity" data-city="惠州">惠州</view>
+    </view>
+  </view>
+
+  <!-- 商品列表区域 -->
+  <view class="goods-section">
+    <view class="section-title">服务详情</view>
+    <goods-list wr-class="goods-list-container" goodsList="{{goodsList}}" bind:click="goodListClickHandle" bind:addcart="goodListAddCartHandle" />
+    <load-more list-is-empty="{{!goodsList.length}}" status="{{goodsListLoadStatus}}" bind:retry="onReTry" />
+  </view>
+
   <t-toast id="t-toast" />
 </view>

@@ -1,35 +1,35 @@
 page {
   box-sizing: border-box;
   padding-bottom: calc(env(safe-area-inset-bottom) + 96rpx);
+  background-color: #f5f5f5;
 }
 
-.t-tabs.t-tabs--top .t-tabs__scroll {
-  border-bottom: none !important;
+.home-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.home-page-header {
-  background: linear-gradient(#fff, #f5f5f5);
-}
-
-.home-page-container {
-  background: #f5f5f5;
-}
-
-.home-page-container,
-.home-page-header {
-  display: block;
-  padding: 0 24rpx;
+/* 页面标题 */
+.page-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  padding: 30rpx 24rpx 10rpx;
+  color: #333;
 }
 
 /* 通知栏样式 */
 .notice-bar {
-  margin: 16rpx 0;
+  padding: 0 24rpx;
+  margin: 10rpx 0 20rpx;
 }
 
 .notice-bar__inner {
   margin: 0 !important;
-  background-color: #E8F3F1 !important;
+  background-color: #f0f9ff !important;
   border-radius: 8rpx !important;
+  display: flex;
+  align-items: center;
 }
 
 .notice-bar__content {
@@ -37,14 +37,68 @@ page {
   font-size: 26rpx !important;
 }
 
-.home-page-header .swiper-wrap {
-  margin-top: 20rpx;
+/* 轮播图样式 */
+.swiper-wrap {
+  padding: 0 24rpx;
+  margin-bottom: 20rpx;
 }
 
-.home-page-header .t-image__swiper {
+.swiper-wrap .t-image__swiper {
   width: 100%;
   height: 300rpx;
   border-radius: 10rpx;
+}
+
+/* 城市选择区域 */
+.city-selection {
+  padding: 15rpx 24rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  color: #333;
+}
+
+.city-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.city-item {
+  padding: 14rpx 50rpx;
+  background-color: #f5f5f5;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+.city-item.active {
+  background-color: #e8f3f1;
+  color: #26a69a;
+  border-color: #26a69a;
+}
+
+/* 商品列表区域 */
+.goods-section {
+  margin-top: 20rpx;
+  padding: 15rpx 24rpx;
+  background-color: #fff;
+}
+
+.goods-list-container {
+  margin-top: 10rpx !important;
+  background-color: #fff !important;
+}
+
+/* 保留原有样式 */
+.t-tabs.t-tabs--top .t-tabs__scroll {
+  border-bottom: none !important;
 }
 
 .home-page-container .t-tabs {
@@ -96,11 +150,6 @@ page {
 .t-tabs.t-tabs--top .t-tabs__item,
 .t-tabs.t-tabs--bottom .t-tabs__item {
   height: 86rpx !important;
-}
-
-.home-page-container .goods-list-container {
-  background: #f5f5f5 !important;
-  margin-top: 16rpx;
 }
 
 .home-page-tabs {

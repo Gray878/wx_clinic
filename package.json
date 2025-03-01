@@ -10,7 +10,7 @@
     "prepare": "husky install",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
-  "author": "",
+  "author": "Gray878",
   "license": "ISC",
   "config": {
     "commitizen": {

@@ -3,6 +3,7 @@ import { getHomeSwiper } from '../../services/home/home';
 import { listGood, getPrice } from '../../services/good/spu';
 import { getCloudImageTempUrl } from '../../utils/cloudImageHandler';
 import { LIST_LOADING_STATUS } from '../../utils/listLoading';
+import Toast from 'tdesign-miniprogram/toast/index';
 
 Page({
   data: {
@@ -16,7 +17,8 @@ Page({
     duration: '500',
     interval: 5000,
     navigation: { type: 'dots' },
-    swiperImageProps: { mode: 'scaleToFill' }
+    swiperImageProps: { mode: 'scaleToFill' },
+    currentCity: '广州'
   },
 
   goodListPagination: {
@@ -58,10 +60,20 @@ Page({
   },
 
   async loadHomeSwiper() {
-    const { images } = await getHomeSwiper();
-    const handledImages = await getCloudImageTempUrl(images);
-
-    this.setData({ imgSrcs: handledImages });
+    try {
+      const { images } = await getHomeSwiper();
+      const handledImages = await getCloudImageTempUrl(images);
+      this.setData({ imgSrcs: handledImages });
+    } catch (error) {
+      console.error('加载轮播图失败', error);
+      // 设置默认轮播图
+      this.setData({
+        imgSrcs: [{
+          img: 'https://cdn-we-retail.ym.tencent.com/miniapp/home/banner1.png',
+          type: 'image'
+        }]
+      });
+    }
   },
 
   onReTry() {
@@ -78,7 +90,7 @@ Page({
     this.setData({ goodsListLoadStatus: LIST_LOADING_STATUS.LOADING });
 
     const pageSize = this.goodListPagination.num;
-    const pageIndex = fresh ? 1 : this.goodListPagination.num;
+    const pageIndex = fresh ? 1 : this.goodListPagination.index;
 
     try {
       const { records: nextList, total } = await listGood({ pageNumber: pageIndex, pageSize });
@@ -122,10 +134,20 @@ Page({
     wx.navigateTo({ url: '/pages/goods/search/index' });
   },
 
-  navToActivityDetail({ detail }) {
-    const { index: promotionID = 0 } = detail || {};
-    wx.navigateTo({
-      url: `/pages/promotion-detail/index?promotion_id=${promotionID}`,
+  // 城市选择
+  selectCity(e) {
+    const city = e.currentTarget.dataset.city;
+    this.setData({
+      currentCity: city
+    });
+    
+    // 这里可以根据选择的城市加载相应的服务或其他数据
+    Toast({
+      context: this,
+      selector: '#t-toast',
+      message: `已选择${city}`,
+      icon: '',
+      duration: 1000,
     });
   }
 });
