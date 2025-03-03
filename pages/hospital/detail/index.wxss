@@ -1,0 +1,254 @@
+page {
+  background-color: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+.hospital-detail-container {
+  width: 100%;
+}
+
+/* 医院头部 */
+.hospital-header {
+  position: relative;
+  width: 100%;
+  height: 400rpx;
+}
+
+.hospital-cover {
+  width: 100%;
+  height: 100%;
+}
+
+.hospital-info-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 30rpx 24rpx;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: #fff;
+}
+
+.hospital-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.hospital-rating {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+}
+
+.rating-stars {
+  display: flex;
+  margin: 0 10rpx;
+}
+
+.rating-count {
+  color: #ddd;
+  font-size: 24rpx;
+}
+
+/* 医院信息卡片 */
+.hospital-info-card {
+  margin: 20rpx;
+  padding: 30rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  margin-left: 16rpx;
+  color: #666;
+  width: 160rpx;
+  font-size: 28rpx;
+}
+
+.info-value {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 医院简介和特色专科 */
+.hospital-section {
+  margin: 20rpx;
+  padding: 30rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  position: relative;
+  padding-left: 20rpx;
+}
+
+.section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8rpx;
+  width: 8rpx;
+  height: 32rpx;
+  background-color: #26a69a;
+  border-radius: 4rpx;
+}
+
+.section-content {
+  padding: 10rpx 0;
+}
+
+.hospital-introduction {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* 富文本样式增强 */
+.hospital-introduction {
+  width: 100%;
+  overflow: hidden;
+}
+
+.hospital-introduction rich-text {
+  display: block;
+  width: 100%;
+}
+
+.hospital-introduction image {
+  max-width: 100%;
+  height: auto !important;
+  margin: 20rpx 0;
+  border-radius: 8rpx;
+}
+
+.hospital-introduction p {
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  line-height: 1.8;
+  color: #333;
+}
+
+.hospital-introduction h1, 
+.hospital-introduction h2, 
+.hospital-introduction h3, 
+.hospital-introduction h4 {
+  margin: 30rpx 0 20rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.hospital-introduction h1 {
+  font-size: 36rpx;
+}
+
+.hospital-introduction h2 {
+  font-size: 34rpx;
+}
+
+.hospital-introduction h3 {
+  font-size: 32rpx;
+}
+
+.hospital-introduction h4 {
+  font-size: 30rpx;
+}
+
+.hospital-introduction ul, 
+.hospital-introduction ol {
+  padding-left: 40rpx;
+  margin: 20rpx 0;
+}
+
+.hospital-introduction li {
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #333;
+}
+
+.hospital-introduction a {
+  color: #26a69a;
+  text-decoration: underline;
+}
+
+.hospital-introduction table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20rpx 0;
+}
+
+.hospital-introduction table td,
+.hospital-introduction table th {
+  border: 1px solid #ddd;
+  padding: 16rpx;
+  text-align: left;
+}
+
+.hospital-introduction table th {
+  background-color: #f2f2f2;
+}
+
+.specialties-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.specialty-item {
+  display: flex;
+  align-items: center;
+  margin-right: 40rpx;
+  margin-bottom: 20rpx;
+}
+
+.specialty-name {
+  font-size: 28rpx;
+  color: #333;
+  margin-left: 10rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #999;
+  margin: 30rpx 0;
+}
+
+.back-btn {
+  margin-top: 40rpx;
+  width: 300rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  color: #fff;
+  background-color: #26a69a;
+  border-radius: 40rpx;
+} 

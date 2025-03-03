@@ -29,7 +29,9 @@
     "pages/order/fill-tracking-no/index",
     "pages/order/delivery-detail/index",
     "pages/order/invoice/index",
-    "pages/usercenter/name-edit/index"
+    "pages/usercenter/name-edit/index",
+    "pages/hospital/detail/index",
+    "pages/hospital/list/index"
   ],
   "tabBar": {
     "custom": true,

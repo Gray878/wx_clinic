@@ -1,0 +1,72 @@
+<view style="text-align: center; color: #b9b9b9; padding: 48rpx 0;" wx:if="{{pageLoading}}">
+  <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
+</view>
+
+<view class="hospital-detail-container" wx:if="{{hospital}}">
+  <!-- 医院头部信息 -->
+  <view class="hospital-header">
+    <image class="hospital-cover" src="{{hospital.cover_image}}" mode="aspectFill"></image>
+    <view class="hospital-info-overlay">
+      <view class="hospital-name">{{hospital.name}}</view>
+      <view class="hospital-rating">
+        <text>评分：</text>
+        <view class="rating-stars">
+          <t-icon name="star-filled" size="30rpx" color="#FFD700" wx:for="{{hospital.rating}}" wx:key="index" />
+        </view>
+        <text class="rating-count">({{hospital.rating_count || 0}})</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 医院信息卡片 -->
+  <view class="hospital-info-card">
+    <view class="info-item">
+      <t-icon name="time" size="40rpx" color="#26a69a" />
+      <text class="info-label">营业时间：</text>
+      <text class="info-value">{{hospital.business_hour}}</text>
+    </view>
+    
+    <view class="info-item" bindtap="navigateToHospital">
+      <t-icon name="location" size="40rpx" color="#26a69a" />
+      <text class="info-label">医院地址：</text>
+      <text class="info-value">{{hospital.address}}</text>
+      <t-icon name="chevron-right" size="40rpx" color="#CCCCCC" />
+    </view>
+    
+    <view class="info-item" bindtap="callHospital">
+      <t-icon name="call" size="40rpx" color="#26a69a" />
+      <text class="info-label">联系电话：</text>
+      <text class="info-value">{{hospital.phone || '暂无'}}</text>
+      <t-icon name="chevron-right" size="40rpx" color="#CCCCCC" />
+    </view>
+  </view>
+
+  <!-- 医院简介 -->
+  <view class="hospital-section">
+    <view class="section-title">医院简介</view>
+    <view class="section-content">
+      <rich-text class="hospital-introduction" nodes="{{processedIntroduction}}"></rich-text>
+    </view>
+  </view>
+
+  <!-- 特色专科 -->
+  <view class="hospital-section" wx:if="{{hospital.specialties && hospital.specialties.length > 0}}">
+    <view class="section-title">特色专科</view>
+    <view class="section-content">
+      <view class="specialties-list">
+        <view class="specialty-item" wx:for="{{hospital.specialties}}" wx:key="index">
+          <t-icon name="check-circle" size="32rpx" color="#26a69a" />
+          <text class="specialty-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>
+
+<view class="empty-state" wx:if="{{!pageLoading && !hospital}}">
+  <t-icon name="info-circle" size="96rpx" color="#CCCCCC" />
+  <text class="empty-text">未找到医院信息</text>
+  <button class="back-btn" bindtap="goBack">返回首页</button>
+</view> 

@@ -1,0 +1,279 @@
+{
+    "previewTableName": "hospital-preview",
+    "publishCacheStatus": "ready",
+    "subType": "database",
+    "schema": {
+        "x-primary-column": "_id",
+        "x-kind": "tcb",
+        "x-defaultMethods": [
+            "wedaCreate",
+            "wedaUpdate",
+            "wedaDelete",
+            "wedaGetItem",
+            "wedaGetRecords",
+            "wedaGetList",
+            "wedaBatchCreate",
+            "wedaBatchUpdate",
+            "wedaBatchDelete"
+        ],
+        "type": "object",
+        "x-relatedType": "exist",
+        "x-viewId": "view-6ks8x4pops",
+        "required": [
+            "address",
+            "name",
+            "business_hour"
+        ],
+        "properties": {
+            "owner": {
+                "default": "",
+                "x-system": true,
+                "x-id": "4ee4411",
+                "name": "owner",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 4,
+                "title": "所有人",
+                "type": "string",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "address": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "16ba83ea",
+                "format": "",
+                "description": "",
+                "type": "string",
+                "x-index": 10,
+                "title": "地址",
+                "x-unique": false,
+                "maxLength": 4000
+            },
+            "city": {
+                "x-keyPath": "",
+                "x-id": "569d1499",
+                "format": "many-one",
+                "description": "如“广州”为“gz”",
+                "isEnum": false,
+                "type": "object",
+                "x-index": 12,
+                "title": "城市",
+                "list": [
+                    {
+                        "x-id": "71gl9etn",
+                        "name": "_id",
+                        "pId": "569d1499",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                ],
+                "x-unique": false,
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "Hospital",
+                    "parentFieldTitle": "Hospital",
+                    "parentDataSourceName": "server_city"
+                },
+                "x-required": false,
+                "name": "city",
+                "deleteWay": "doNothing",
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                }
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "4b9b5d0",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "rating": {
+                "x-required": false,
+                "default": 1,
+                "x-keyPath": "",
+                "x-id": "756416ce",
+                "format": "",
+                "maximum": 5,
+                "description": "",
+                "type": "number",
+                "x-index": 6,
+                "title": "分数",
+                "minimum": 0,
+                "x-unique": false
+            },
+            "business_hour": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "f8fde1c6",
+                "format": "",
+                "description": "",
+                "type": "string",
+                "x-index": 8,
+                "title": "营业时间",
+                "x-unique": false,
+                "maxLength": 4000
+            },
+            "createdAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "0562ab4",
+                "format": "datetime",
+                "x-index": 2,
+                "type": "number",
+                "title": "创建时间",
+                "x-unique": false
+            },
+            "createBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "18cf68d",
+                "name": "createBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 5,
+                "type": "string",
+                "title": "创建人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "phone": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "ea5fc491",
+                "format": "tel",
+                "description": "",
+                "type": "string",
+                "x-index": 14,
+                "title": "电话",
+                "x-unique": false,
+                "maxLength": 32
+            },
+            "updateBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "93a079a",
+                "name": "updateBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 6,
+                "type": "string",
+                "title": "修改人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "_openid": {
+                "default": "",
+                "x-system": true,
+                "x-id": "0844bd2",
+                "name": "_openid",
+                "format": "",
+                "pattern": "",
+                "description": "仅微信云开发下使用",
+                "x-index": 45,
+                "title": "记录创建者",
+                "type": "string",
+                "x-unique": false
+            },
+            "name": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "dba2b3c3",
+                "format": "",
+                "description": "",
+                "type": "string",
+                "x-index": 2,
+                "title": "医院名称",
+                "x-unique": true,
+                "maxLength": 256
+            },
+            "cover_image": {
+                "x-keyPath": "",
+                "x-id": "4dfc9482",
+                "format": "x-image",
+                "description": "",
+                "isEnum": false,
+                "type": "string",
+                "x-index": 4,
+                "title": "封面图片",
+                "x-unique": false,
+                "x-image-size": 5242880,
+                "x-required": false,
+                "name": "cover_image",
+                "maxLength": 1024
+            },
+            "_id": {
+                "default": "",
+                "x-system": true,
+                "x-id": "45c60c3",
+                "format": "",
+                "pattern": "",
+                "x-index": 1,
+                "type": "string",
+                "title": "数据标识",
+                "x-unique": true
+            },
+            "introduction": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "b783aca9",
+                "format": "x-rtf",
+                "description": "",
+                "type": "string",
+                "x-index": 16,
+                "title": "介绍",
+                "x-unique": false,
+                "maxLength": 262144
+            },
+            "updatedAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "6cd41d6",
+                "format": "datetime",
+                "x-index": 3,
+                "title": "更新时间",
+                "type": "number",
+                "x-unique": false
+            }
+        }
+    },
+    "dbInstanceType": "MYSQL",
+    "title": "医院",
+    "name": "hospital",
+    "dbLinkType": "internal",
+    "tableNameRule": "only_name",
+    "type": "database",
+    "childDataSourceNames": null,
+    "updateTime": "2025-03-02T05:21:05",
+    "publishedTableName": "hospital",
+    "id": "data-4xpzqVaXy",
+    "dbSourceType": "internal_mysql",
+    "methods": [],
+    "fun": "{\"onlineVersion\": 3, \"previewVersion\": 2, \"onlinePublishAt\": 1740892865971, \"prviewPublishAt\": 1740892862539}",
+    "publishStatus": 1,
+    "configuration": {}
+}

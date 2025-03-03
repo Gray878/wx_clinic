@@ -1,0 +1,57 @@
+<view style="text-align: center; color: #b9b9b9; padding: 48rpx 0;" wx:if="{{pageLoading}}">
+  <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
+</view>
+
+<view class="hospital-list-container" wx:if="{{!pageLoading}}">
+  <!-- 城市选择栏 -->
+  <view class="city-selection">
+    <view class="city-list">
+      <view class="city-item {{currentCity === city ? 'active' : ''}}" 
+            wx:for="{{cityList}}" 
+            wx:key="index" 
+            wx:for-item="city" 
+            bindtap="selectCity" 
+            data-city="{{city}}">
+        {{city}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 医院列表 -->
+  <view class="hospital-list-section">
+    <view class="list-title">
+      <text class="title-text">三甲医院列表</text>
+      <text class="count-text">(共{{hospitalList.length}}家)</text>
+    </view>
+
+    <view class="hospital-list">
+      <view class="hospital-item" wx:for="{{hospitalList}}" wx:key="_id" bindtap="hospitalClickHandle" data-hospital="{{item}}">
+        <view class="hospital-avatar-container">
+          <image class="hospital-avatar" src="{{item.cover_image}}" mode="aspectFill"></image>
+        </view>
+        <view class="hospital-info">
+          <view class="hospital-name">{{item.name}}</view>
+          <view class="hospital-rating">
+            评分：
+            <view class="rating-stars">
+              <t-icon name="star-filled" size="30rpx" color="#26a69a" wx:for="{{5}}" wx:key="index" />
+            </view>
+          </view>
+          <view class="hospital-location">{{item.address}}</view>
+        </view>
+        <view class="navigation-icon" catchtap="navigateToHospital" data-hospital="{{item}}">
+          <t-icon name="location" size="48rpx" color="#26a69a" />
+          <text class="nav-text">一键导航</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无数据状态 -->
+  <view class="empty-state" wx:if="{{hospitalList.length === 0}}">
+    <t-icon name="info-circle" size="96rpx" color="#CCCCCC" />
+    <text class="empty-text">暂无医院数据</text>
+  </view>
+
+  <t-toast id="t-toast" />
+</view> 

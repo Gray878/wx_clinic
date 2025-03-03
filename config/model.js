@@ -9,4 +9,6 @@ export const DATA_MODEL_KEY = {
   ORDER_ITEM: 'shop_order_item',
   SKU: 'shop_sku',
   SPU: 'shop_spu',
+  CITY: 'server_city',
+  HOSPITAL: 'hospital'
 };

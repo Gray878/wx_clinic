@@ -33,18 +33,85 @@
   <!-- 城市选择区域 -->
   <view class="city-selection">
     <view class="section-title">选择城市</view>
-    <view class="city-list">
-      <view class="city-item {{currentCity === '广州' ? 'active' : ''}}" bindtap="selectCity" data-city="广州">广州</view>
-      <view class="city-item {{currentCity === '佛山' ? 'active' : ''}}" bindtap="selectCity" data-city="佛山">佛山</view>
-      <view class="city-item {{currentCity === '惠州' ? 'active' : ''}}" bindtap="selectCity" data-city="惠州">惠州</view>
-    </view>
+    <scroll-view class="city-scroll-view" scroll-x enable-flex>
+      <view 
+        class="city-item {{currentCityCode === '' ? 'active' : ''}}"
+        bindtap="selectCity"
+        data-city="全部"
+        data-code=""
+      >
+        全部
+      </view>
+      <view 
+        wx:for="{{cityList}}" 
+        wx:key="_id" 
+        class="city-item {{currentCityCode === item.code ? 'active' : ''}}" 
+        bindtap="selectCity" 
+        data-city="{{item.name}}" 
+        data-code="{{item.code}}"
+      >
+        {{item.name}}
+      </view>
+    </scroll-view>
   </view>
 
-  <!-- 商品列表区域 -->
-  <view class="goods-section">
-    <view class="section-title">服务详情</view>
-    <goods-list wr-class="goods-list-container" goodsList="{{goodsList}}" bind:click="goodListClickHandle" bind:addcart="goodListAddCartHandle" />
+  <!-- 服务选择区域 -->
+  <view class="service-selection">
+    <view class="section-title">选择服务</view>
+    <view class="service-grid">
+      <view class="service-row" wx:for="{{goodsList}}" wx:key="index" wx:if="{{index % 2 === 0}}">
+        <!-- 当前行的第一个服务 -->
+        <view class="service-item" bindtap="goodListClickHandle" data-goods="{{goodsList[index]}}">
+          <image class="service-icon" src="{{goodsList[index].icon_image || 'https://cdn-we-retail.ym.tencent.com/miniapp/ic_service_default.png'}}" mode="aspectFit"></image>
+          <view class="service-info">
+            <text class="service-name">{{goodsList[index].name}}</text>
+          </view>
+        </view>
+        
+        <!-- 当前行的第二个服务（如果存在） -->
+        <view class="service-item" wx:if="{{index + 1 < goodsList.length}}" bindtap="goodListClickHandle" data-goods="{{goodsList[index + 1]}}">
+          <image class="service-icon" src="{{goodsList[index + 1].icon_image || 'https://cdn-we-retail.ym.tencent.com/miniapp/ic_service_default.png'}}" mode="aspectFit"></image>
+          <view class="service-info">
+            <text class="service-name">{{goodsList[index + 1].name}}</text>
+          </view>
+        </view>
+        
+        <!-- 如果没有第二个服务，则显示空白占位 -->
+        <view class="service-item empty" wx:else></view>
+      </view>
+    </view>
     <load-more list-is-empty="{{!goodsList.length}}" status="{{goodsListLoadStatus}}" bind:retry="onReTry" />
+  </view>
+
+  <!-- 三甲医院列表 -->
+  <view class="hospital-section">
+    <view class="section-header">
+      <view class="section-title">三甲医院</view>
+      <view class="section-more" bindtap="navigateToHospitalList">
+        更多 <t-icon name="chevron-right" size="32rpx" />
+      </view>
+    </view>
+    
+    <view class="hospital-list">
+      <view class="hospital-item" wx:for="{{hospitalList}}" wx:key="_id" bindtap="hospitalClickHandle" data-hospital="{{item}}">
+        <view class="hospital-avatar-container">
+          <image class="hospital-avatar" src="{{item.cover_image}}" mode="aspectFill"></image>
+        </view>
+        <view class="hospital-info">
+          <view class="hospital-name">{{item.name}}</view>
+          <view class="hospital-rating">
+            评分：
+            <view class="rating-stars">
+              <t-icon name="star-filled" size="30rpx" color="#26a69a" wx:for="{{5}}" wx:key="index" />
+            </view>
+          </view>
+        </view>
+        <view class="navigation-icon" catchtap="navigateToHospital" data-hospital="{{item}}">
+          <t-icon name="location" size="48rpx" color="#26a69a" />
+          <text class="nav-text">一键导航</text>
+        </view>
+      </view>
+    </view>
   </view>
 
   <t-toast id="t-toast" />
