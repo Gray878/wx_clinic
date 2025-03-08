@@ -72,11 +72,6 @@ Page({
           }
         }
         
-        // 如果没有评分数量，添加默认值
-        if (!hospital.rating_count) {
-          hospital.rating_count = Math.floor(Math.random() * 100) + 50; // 随机生成50-150之间的数字
-        }
-        
         // 确保评分存在且合理
         if (!hospital.rating || hospital.rating < 1) {
           hospital.rating = 5; // 默认5星评分

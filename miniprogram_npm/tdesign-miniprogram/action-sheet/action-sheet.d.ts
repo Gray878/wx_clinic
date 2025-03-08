@@ -23,6 +23,7 @@ export default class ActionSheet extends SuperComponent {
         items: {
             type: ArrayConstructor;
             value?: (string | import("./type").ActionSheetItem)[];
+            required?: boolean;
         };
         popupProps?: {
             type: ObjectConstructor;
@@ -47,10 +48,12 @@ export default class ActionSheet extends SuperComponent {
         visible: {
             type: BooleanConstructor;
             value?: boolean;
+            required?: boolean;
         };
         defaultVisible: {
             type: BooleanConstructor;
             value?: boolean;
+            required?: boolean;
         };
     };
     data: {
@@ -65,16 +68,19 @@ export default class ActionSheet extends SuperComponent {
         key: string;
         event: string;
     }[];
-    ready(): void;
+    observers: {
+        'visible, items'(visible: boolean): void;
+    };
     methods: {
-        onSwiperChange(e: WechatMiniprogram.TouchEvent): void;
+        init(): void;
+        memoInitialData(): void;
         splitGridThemeActions(): void;
         show(options: any): void;
-        memoInitialData(): void;
         close(): void;
         onPopupVisibleChange({ detail }: {
             detail: any;
         }): void;
+        onSwiperChange(e: WechatMiniprogram.TouchEvent): void;
         onSelect(event: WechatMiniprogram.TouchEvent): void;
         onCancel(): void;
     };

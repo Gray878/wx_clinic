@@ -25,7 +25,8 @@ Page({
     currentCity: '全部',
     currentCityCode: '',
     cityList: [], // 城市列表数据
-    hospitalList: []
+    hospitalList: [],
+    showLoginPopup: false
   },
 
   goodListPagination: {
@@ -42,6 +43,11 @@ Page({
   },
 
   onLoad() {
+    // 检查登录状态
+    const app = getApp();
+    if (!app.globalData.isLoggedIn) {
+      this.setData({ showLoginPopup: true });
+    }
     this.init();
   },
 
@@ -359,5 +365,62 @@ Page({
       address: hospital.address || hospital.name,
       scale: 18
     });
+  },
+
+  // 处理登录
+  async handleLogin() {
+    try {
+      // 获取用户信息
+      const { userInfo } = await new Promise((resolve, reject) => {
+        wx.getUserProfile({
+          desc: '用于完善会员资料',
+          success: (res) => {
+            resolve(res);
+          },
+          fail: (err) => {
+            reject(err);
+          }
+        });
+      });
+
+      // 获取code
+      const { code } = await new Promise((resolve, reject) => {
+        wx.login({
+          success: (res) => {
+            resolve(res);
+          },
+          fail: (err) => {
+            reject(err);
+          }
+        });
+      });
+
+      // 保存用户信息到本地
+      wx.setStorageSync('userInfo', userInfo);
+      
+      // 更新全局状态
+      getApp().globalData.isLoggedIn = true;
+      
+      // 登录成功
+      this.setData({ 
+        showLoginPopup: false,
+      });
+      
+      wx.showToast({
+        title: '登录成功',
+        icon: 'success'
+      });
+    } catch (error) {
+      console.error('登录失败:', error);
+      wx.showToast({
+        title: '登录失败',
+        icon: 'error'
+      });
+    }
+  },
+
+  // 关闭登录弹窗
+  closeLoginPopup() {
+    this.setData({ showLoginPopup: false });
   }
 });

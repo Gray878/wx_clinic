@@ -3,12 +3,20 @@ const props = {
         type: Boolean,
         value: true,
     },
+    allowInputOverMax: {
+        type: Boolean,
+        value: false,
+    },
     autofocus: {
         type: Boolean,
         value: false,
     },
     autosize: {
         type: null,
+        value: false,
+    },
+    bordered: {
+        type: Boolean,
         value: false,
     },
     confirmHold: {
@@ -19,27 +27,40 @@ const props = {
         type: String,
         value: 'return',
     },
+    cursor: {
+        type: Number,
+        value: -1,
+    },
     cursorSpacing: {
         type: Number,
         value: 0,
     },
-    disabled: {
+    disableDefaultPadding: {
         type: Boolean,
         value: false,
     },
-    externalClasses: {
-        type: Array,
+    disabled: {
+        type: null,
+        value: undefined,
+    },
+    fixed: {
+        type: Boolean,
+        value: false,
     },
     focus: {
         type: Boolean,
         value: false,
     },
-    label: {
-        type: String,
-    },
-    fixed: {
+    holdKeyboard: {
         type: Boolean,
         value: false,
+    },
+    indicator: {
+        type: Boolean,
+        value: false,
+    },
+    label: {
+        type: String,
     },
     maxcharacter: {
         type: Number,
@@ -52,27 +73,23 @@ const props = {
         type: String,
         value: undefined,
     },
+    placeholderClass: {
+        type: String,
+        value: 'textarea-placeholder',
+    },
     placeholderStyle: {
         type: String,
         value: '',
     },
-    value: {
-        type: String,
-        value: null,
+    readonly: {
+        type: null,
+        value: undefined,
     },
-    defaultValue: {
-        type: String,
-        value: '',
+    selectionEnd: {
+        type: Number,
+        value: -1,
     },
-    bordered: {
-        type: Boolean,
-        value: false,
-    },
-    indicator: {
-        type: Boolean,
-        value: false,
-    },
-    cursor: {
+    selectionStart: {
         type: Number,
         value: -1,
     },
@@ -80,21 +97,12 @@ const props = {
         type: Boolean,
         value: true,
     },
-    selectionStart: {
-        type: Number,
-        value: -1,
+    value: {
+        type: null,
+        value: null,
     },
-    selectionEnd: {
-        type: Number,
-        value: -1,
-    },
-    disableDefaultPadding: {
-        type: Boolean,
-        value: false,
-    },
-    holdKeyboard: {
-        type: Boolean,
-        value: false,
+    defaultValue: {
+        type: null,
     },
 };
 export default props;

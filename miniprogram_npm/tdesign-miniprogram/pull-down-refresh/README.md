@@ -54,6 +54,7 @@ refresh-timeout | Number | 3000 | 刷新超时时间 | N
 scroll-into-view | String | - | `1.1.5`。值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素 | N
 show-scrollbar | Boolean | true | 滚动条显隐控制 (同时开启 enhanced 属性后生效) | N
 upper-threshold | String / Number | 50 | `1.1.5`。距顶部/左边多远时，触发 scrolltoupper 事件 | N
+using-custom-navbar | Boolean | false | 是否使用了自定义导航栏 | N
 value | Boolean | false | 组件状态，值为 `true` 表示下拉状态，值为 `false` 表示收起状态 | N
 default-value | Boolean | undefined | 组件状态，值为 `true` 表示下拉状态，值为 `false` 表示收起状态。非受控属性 | N
 
@@ -69,7 +70,7 @@ refresh | \- | 结束下拉时触发
 scrolltolower | \- | 滚动到页面底部时触发
 timeout | \- | 刷新超时触发
 
-### PullDownRefresh 外部样式类
+### PullDownRefresh External Classes
 
 类名 | 描述
 -- | --
@@ -78,7 +79,7 @@ t-class-indicator | 指示样式类
 t-class-loading | 加载样式类
 t-class-text | 文本样式类
 
-### CSS 变量
+### CSS Variables
 
 组件提供了下列 CSS 变量，可用于自定义样式。
 名称 | 默认值 | 描述

@@ -41,6 +41,8 @@ let Radio = class Radio extends SuperComponent {
         this.properties = Object.assign(Object.assign({}, Props), { borderless: {
                 type: Boolean,
                 value: false,
+            }, tId: {
+                type: String,
             } });
         this.controlledProps = [
             {
@@ -57,27 +59,33 @@ let Radio = class Radio extends SuperComponent {
             iconVal: [],
             _placement: '',
             _disabled: false,
+            _readonly: false,
         };
         this.observers = {
             disabled(v) {
                 this.setData({ _disabled: v });
             },
+            readonly(v) {
+                this.setData({ _readonly: v });
+            },
         };
         this.methods = {
             handleTap(e) {
-                const { _disabled, readonly, contentDisabled } = this.data;
+                const { _disabled, _readonly, contentDisabled } = this.data;
                 const { target } = e.currentTarget.dataset;
-                if (_disabled || readonly || (target === 'text' && contentDisabled))
+                if (_disabled || _readonly || (target === 'text' && contentDisabled))
                     return;
                 this.doChange();
             },
             doChange() {
+                var _a;
                 const { value, checked, allowUncheck } = this.data;
+                const isAllowUncheck = Boolean(allowUncheck || ((_a = this.$parent) === null || _a === void 0 ? void 0 : _a.data.allowUncheck));
                 if (this.$parent) {
-                    this.$parent.updateValue(checked && allowUncheck ? null : value);
+                    this.$parent.updateValue(checked && isAllowUncheck ? null : value);
                 }
                 else {
-                    this._trigger('change', { checked: checked && allowUncheck ? false : !checked });
+                    this._trigger('change', { checked: isAllowUncheck ? !checked : true });
                 }
             },
             init() {
@@ -94,6 +102,11 @@ let Radio = class Radio extends SuperComponent {
             setDisabled(disabled) {
                 this.setData({
                     _disabled: this.data.disabled || disabled,
+                });
+            },
+            setReadonly(readonly) {
+                this.setData({
+                    _readonly: this.data.readonly || readonly,
                 });
             },
         };

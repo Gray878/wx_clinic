@@ -4,8 +4,10 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1727109350336, function(require, module, exports) {
+__DEFINE__(1741343398910, function(require, module, exports) {
 
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -150,7 +152,7 @@ function getUserAgent() {
         return ua_1;
     }
 }
-var VERSION = "1.2.1";
+var VERSION = "1.4.0";
 
 var callDataSource = function (_a) {
     var dataSourceName = _a.dataSourceName, methodName = _a.methodName, params = _a.params, realMethodName = _a.realMethodName, callFunction = _a.callFunction, _b = _a.envType, envType = _b === void 0 ? 'prod' : _b, mode = _a.mode;
@@ -272,6 +274,45 @@ var runMysqlCommand = function (_a) {
     });
 };
 
+var createRawQueryClient = function (callFunction) { return ({
+    $runSQL: function (sql, params, config) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, runMysqlCommand({
+                            sql: sql,
+                            params: params,
+                            config: __assign(__assign({}, config), { preparedStatements: true }),
+                            callFunction: callFunction
+                        })];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    },
+    $runSQLRaw: function (sql, config) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, runMysqlCommand({
+                            sql: sql,
+                            params: [],
+                            config: __assign(__assign({}, config), { preparedStatements: false }),
+                            callFunction: callFunction
+                        })];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    }
+}); };
+
 var CRUD_METHODS = {
     create: {
         methodName: 'wedaCreateV2'
@@ -359,48 +400,11 @@ var generateClientByDataSourceName = function (dataSourceName, callFunction) {
 };
 // 使用 TypeScript 的 Proxy 来定义一个动态的客户端
 var generateClient = function (callFunction) {
-    var rawQueryClient = {
-        $runSQL: function (sql, params, config) {
-            return __awaiter(this, void 0, void 0, function () {
-                var res;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, runMysqlCommand({
-                                sql: sql,
-                                params: params,
-                                config: __assign(__assign({}, config), { preparedStatements: true }),
-                                callFunction: callFunction
-                            })];
-                        case 1:
-                            res = _a.sent();
-                            return [2 /*return*/, res];
-                    }
-                });
-            });
-        },
-        $runSQLRaw: function (sql, config) {
-            return __awaiter(this, void 0, void 0, function () {
-                var res;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, runMysqlCommand({
-                                sql: sql,
-                                params: [],
-                                config: __assign(__assign({}, config), { preparedStatements: false }),
-                                callFunction: callFunction
-                            })];
-                        case 1:
-                            res = _a.sent();
-                            return [2 /*return*/, res];
-                    }
-                });
-            });
-        }
-    };
+    var rawQueryClient = createRawQueryClient(callFunction);
     return new Proxy({}, {
         get: function (target, prop) {
             if (typeof prop === 'string') {
-                if (rawQueryClient.hasOwnProperty(prop)) {
+                if (Object.prototype.hasOwnProperty.call(rawQueryClient, prop)) {
                     return rawQueryClient[prop];
                 }
                 // 返回一个函数，这个函数接受任意参数并返回一个 Promise
@@ -410,6 +414,110 @@ var generateClient = function (callFunction) {
     });
 };
 
+var READ_DEFAULT_PARAMS = {
+    filter: {
+        where: {}
+    },
+    select: {
+        $master: true
+    }
+};
+function createDefaultMethod(methodName) {
+    return {
+        getUrl: function (modelName) { return "".concat(modelName, "/").concat(methodName); },
+        method: 'post'
+    };
+}
+var HTTP_DATA_MODEL_METHODS = {
+    get: __assign(__assign({}, createDefaultMethod('get')), { defaultParams: __assign({}, READ_DEFAULT_PARAMS) }),
+    list: __assign(__assign({}, createDefaultMethod('list')), { defaultParams: __assign({}, READ_DEFAULT_PARAMS) }),
+    create: createDefaultMethod('create'),
+    createMany: createDefaultMethod('createMany'),
+    update: __assign(__assign({}, createDefaultMethod('update')), { method: 'put' }),
+    updateMany: __assign(__assign({}, createDefaultMethod('updateMany')), { method: 'put' }),
+    upsert: createDefaultMethod('upsert'),
+    "delete": createDefaultMethod('delete'),
+    deleteMany: createDefaultMethod('deleteMany')
+};
+var UNKNOWN_ERROR_MESSAGE = 'Unknown error occurred';
+var NOT_SUPPORTED_CODE = 'NotSupported';
+var generateHTTPClient = function (callFunction, fetch, baseUrl) {
+    var rawQueryClient = createRawQueryClient(callFunction);
+    return new Proxy({}, {
+        get: function (_, modelName) {
+            if (typeof modelName !== 'string')
+                return undefined;
+            if (Object.prototype.hasOwnProperty.call(rawQueryClient, modelName)) {
+                return rawQueryClient[modelName];
+            }
+            return generateHTTPClientByDataSourceName(baseUrl, modelName, fetch);
+        }
+    });
+};
+var createWxCloudSDKError = function (message, modelName, methodName, code, requestId) {
+    return new WxCloudSDKError("\u3010\u9519\u8BEF\u3011".concat(message, "\n\u3010\u64CD\u4F5C\u3011\u8C03\u7528 models.").concat(modelName, ".").concat(methodName, "\n\u3010\u9519\u8BEF\u7801\u3011").concat(code, "\n\u3010\u8BF7\u6C42ID\u3011").concat(requestId), {
+        code: code,
+        requestId: requestId
+    });
+};
+var generateHTTPClientByDataSourceName = function (baseUrl, modelName, fetch) {
+    var client = new Proxy({}, {
+        get: function (_, methodName) {
+            var httpDataModelMethod = HTTP_DATA_MODEL_METHODS[methodName];
+            if (!httpDataModelMethod) {
+                var error = new Error("\u4E0D\u652F\u6301\u7684\u64CD\u4F5C: ".concat(methodName));
+                throw new WxCloudSDKError(error.message || UNKNOWN_ERROR_MESSAGE, {
+                    originError: error,
+                    code: NOT_SUPPORTED_CODE,
+                    requestId: 'N/A'
+                });
+            }
+            return function (params) {
+                if (params === void 0) { params = {}; }
+                return __awaiter(void 0, void 0, void 0, function () {
+                    var getUrl, method, _a, defaultParams, effectiveParams, envType, url, result, error_1;
+                    var _b;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
+                            case 0:
+                                getUrl = httpDataModelMethod.getUrl, method = httpDataModelMethod.method, _a = httpDataModelMethod.defaultParams, defaultParams = _a === void 0 ? {} : _a;
+                                effectiveParams = Object.assign({}, defaultParams, params);
+                                envType = effectiveParams.envType === 'pre' ? 'pre' : 'prod';
+                                url = [baseUrl, envType, getUrl(modelName)].join('/');
+                                _c.label = 1;
+                            case 1:
+                                _c.trys.push([1, 3, , 4]);
+                                return [4 /*yield*/, fetch({
+                                        url: url,
+                                        body: JSON.stringify(effectiveParams),
+                                        method: method
+                                    })];
+                            case 2:
+                                result = _c.sent();
+                                if (result.code) {
+                                    // 抛出错误
+                                    throw createWxCloudSDKError(result === null || result === void 0 ? void 0 : result.message, modelName, methodName, result === null || result === void 0 ? void 0 : result.code, result === null || result === void 0 ? void 0 : result.requestId);
+                                }
+                                if (methodName === 'get') {
+                                    // 和 callFunction 实现保持一致
+                                    Object.assign(result, { data: (_b = result.data.record) !== null && _b !== void 0 ? _b : result.data });
+                                }
+                                return [2 /*return*/, result];
+                            case 3:
+                                error_1 = _c.sent();
+                                throw new WxCloudSDKError((error_1 === null || error_1 === void 0 ? void 0 : error_1.message) || UNKNOWN_ERROR_MESSAGE, {
+                                    originError: error_1
+                                });
+                            case 4: return [2 /*return*/];
+                        }
+                    });
+                });
+            };
+        }
+    });
+    return client;
+};
+
 function init(cloud) {
     if (!cloud) {
         throw new Error('cloud is required');
@@ -417,15 +525,21 @@ function init(cloud) {
     if (!cloud.callFunction) {
         throw new Error('cloud.callFunction is required');
     }
-    var OrmClientImpl = generateClient(cloud.callFunction.bind(cloud));
-    cloud.models = OrmClientImpl;
+    var ormClientImpl = generateClient(cloud.callFunction.bind(cloud));
+    cloud.models = ormClientImpl;
     return cloud;
 }
+var index = {
+    init: init,
+    generateHTTPClient: generateHTTPClient
+};
 
+exports.default = index;
+exports.generateHTTPClient = generateHTTPClient;
 exports.init = init;
 
 }, function(modId) {var map = {}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1727109350336);
+return __REQUIRE__(1741343398910);
 })()
 //miniprogram-npm-outsideDeps=[]
 //# sourceMappingURL=index.js.map

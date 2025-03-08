@@ -5,7 +5,8 @@ page view {
   box-sizing: border-box;
 }
 .person-info {
-  padding-top: 20rpx;
+  padding: 30rpx;
+  background: #fff;
 }
 
 .person-info__btn {
@@ -42,4 +43,77 @@ page view {
 }
 .person-info .t-cell-class {
   height: 112rpx;
+}
+
+.avatar-section, .nickname-section, .phone-section, .bg-image-section {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.avatar-wrapper, .bg-image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  margin-bottom: 16rpx;
+}
+
+.bg-image {
+  width: 100%;
+  height: 200rpx;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.edit-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.nickname-input, .phone-input {
+  width: 100%;
+  height: 88rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.btn-wrapper {
+  margin-top: 60rpx;
+  padding: 0 30rpx;
+}
+
+.save-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #26a69a;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 44rpx;
+  border: none;
+}
+
+.save-btn::after {
+  border: none;
+}
+
+.save-btn:active {
+  opacity: 0.9;
 }

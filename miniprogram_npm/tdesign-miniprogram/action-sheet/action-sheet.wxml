@@ -1,4 +1,4 @@
-<wxs src="./action-sheet.wxs" module="this" />
+<wxs src="./action-sheet.wxs" module="_this" />
 <wxs src="../common/utils.wxs" module="_" />
 <import src="./template/list.wxml" />
 <import src="./template/grid.wxml" />
@@ -42,7 +42,7 @@
         bind:tap="onCancel"
         aria-role="button"
       >
-        {{ cancelText }}
+        {{ cancelText || '取消' }}
       </view>
     </view>
   </t-popup>

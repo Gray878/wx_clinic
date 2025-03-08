@@ -15,6 +15,10 @@ const props = {
         type: Boolean,
         value: false,
     },
+    clearTrigger: {
+        type: String,
+        value: 'always',
+    },
     clearable: {
         type: Boolean,
         value: true,
@@ -29,6 +33,7 @@ const props = {
     },
     cursor: {
         type: Number,
+        required: true,
     },
     cursorSpacing: {
         type: Number,
@@ -68,6 +73,11 @@ const props = {
     placeholderStyle: {
         type: String,
         value: '',
+        required: true,
+    },
+    readonly: {
+        type: null,
+        value: undefined,
     },
     resultList: {
         type: Array,
@@ -84,10 +94,6 @@ const props = {
     shape: {
         type: String,
         value: 'square',
-    },
-    style: {
-        type: String,
-        value: '',
     },
     type: {
         type: String,

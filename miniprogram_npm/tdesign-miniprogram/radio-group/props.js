@@ -1,14 +1,14 @@
 const props = {
-    placement: {
-        type: String,
-        value: 'left',
+    allowUncheck: {
+        type: Boolean,
+        value: false,
     },
     borderless: {
         type: Boolean,
         value: false,
     },
     disabled: {
-        type: Boolean,
+        type: null,
         value: undefined,
     },
     icon: {
@@ -24,6 +24,14 @@ const props = {
     },
     options: {
         type: Array,
+    },
+    placement: {
+        type: String,
+        value: 'left',
+    },
+    readonly: {
+        type: null,
+        value: undefined,
     },
     value: {
         type: null,

@@ -256,10 +256,12 @@ Page({
       this.handlePopupHide();
       this.toast('加入购物车成功');
     };
-    const addCartFail = () => this.toast('加入购物车失败');
+    const addCartFail = (error) => {
+      console.error('加入购物车失败:', error);
+      this.toast(error.message || '加入购物车失败');
+    };
 
     const records = await fetchCartItems();
-
     const cartItem = records.find((x) => x.sku._id === pickedSku._id);
     // eslint-disable-next-line eqeqeq
     if (cartItem == null) {
@@ -278,6 +280,7 @@ Page({
         overCount();
       }
     }
+    
   },
 
   onPicked() {

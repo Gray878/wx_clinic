@@ -1,0 +1,225 @@
+{
+    "previewTableName": "lcap-shop_order_item-preview",
+    "publishCacheStatus": "ready",
+    "subType": "database",
+    "schema": {
+        "x-primary-column": "_id",
+        "x-kind": "tcb",
+        "x-defaultMethods": [
+            "wedaCreate",
+            "wedaUpdate",
+            "wedaDelete",
+            "wedaGetItem",
+            "wedaGetRecords",
+            "wedaGetList",
+            "wedaBatchCreate",
+            "wedaBatchUpdate",
+            "wedaBatchDelete"
+        ],
+        "type": "object",
+        "x-relatedType": "exist",
+        "title": "电商订单项",
+        "x-viewId": "view-6kjf82fvcw",
+        "required": [
+            "count"
+        ],
+        "properties": {
+            "owner": {
+                "default": "",
+                "x-system": true,
+                "x-id": "a51dd2e",
+                "name": "owner",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 4,
+                "title": "所有人",
+                "type": "string",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "createdAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "ff1d6a9",
+                "format": "datetime",
+                "x-index": 2,
+                "type": "number",
+                "title": "创建时间",
+                "x-unique": false
+            },
+            "createBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "8da2c24",
+                "name": "createBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 5,
+                "type": "string",
+                "title": "创建人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "updateBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "93a079a",
+                "name": "updateBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 6,
+                "type": "string",
+                "title": "修改人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "fcfc9a4",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "_openid": {
+                "default": "",
+                "x-system": true,
+                "x-id": "0fa875e",
+                "name": "_openid",
+                "format": "",
+                "pattern": "",
+                "description": "仅微信云开发下使用",
+                "x-index": 45,
+                "title": "记录创建者",
+                "type": "string",
+                "x-unique": false
+            },
+            "count": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "93b95d8c",
+                "format": "",
+                "description": "",
+                "type": "number",
+                "x-index": 2,
+                "title": "数量",
+                "minimum": 0,
+                "x-unique": false
+            },
+            "comment": {
+                "format": "one-one-r",
+                "name": "comment",
+                "deleteWay": "doNothing",
+                "type": "object",
+                "title": "评价",
+                "required": [],
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                },
+                "x-parent": {
+                    "parentFieldKey": "order_item",
+                    "parentFieldTitle": "订单项",
+                    "parentDataSourceName": "shop_comment"
+                }
+            },
+            "_id": {
+                "default": "",
+                "x-system": true,
+                "x-id": "fef63e3",
+                "format": "",
+                "pattern": "",
+                "x-index": 1,
+                "type": "string",
+                "title": "数据标识",
+                "x-unique": true
+            },
+            "sku": {
+                "format": "many-one",
+                "name": "sku",
+                "deleteWay": "doNothing",
+                "type": "object",
+                "title": "SKU",
+                "required": [],
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                },
+                "x-parent": {
+                    "parentFieldKey": "order_item",
+                    "parentFieldTitle": "订单项",
+                    "parentDataSourceName": "shop_sku"
+                }
+            },
+            "updatedAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "95e580b",
+                "format": "datetime",
+                "x-index": 3,
+                "title": "更新时间",
+                "type": "number",
+                "x-unique": false
+            },
+            "order": {
+                "format": "many-one",
+                "name": "order",
+                "deleteWay": "doNothing",
+                "type": "object",
+                "title": "订单",
+                "required": [],
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                },
+                "x-parent": {
+                    "parentFieldKey": "order_item",
+                    "parentFieldTitle": "订单项",
+                    "parentDataSourceName": "shop_order"
+                }
+            }
+        }
+    },
+    "dbInstanceType": "MYSQL",
+    "title": "服务订单项",
+    "name": "shop_order_item",
+    "dbLinkType": "internal",
+    "tableNameRule": "has_lcap",
+    "type": "database",
+    "childDataSourceNames": null,
+    "updateTime": "2025-02-28T14:03:03",
+    "publishedTableName": "lcap-shop_order_item",
+    "id": "data-4x8b7rGt1",
+    "dbSourceType": "internal_mysql",
+    "methods": [],
+    "fun": "{\"onlineVersion\": 7, \"previewVersion\": 6, \"onlinePublishAt\": 1740751383457, \"prviewPublishAt\": 1740751382994}",
+    "publishStatus": 1,
+    "configuration": {}
+}

@@ -7,7 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { SuperComponent, wxComponent } from '../common/src/index';
 import config from '../common/config';
 import props from './props';
-import { unitConvert } from '../common/utils';
+import { unitConvert, systemInfo } from '../common/utils';
+import useCustomNavbar from '../mixins/using-custom-navbar';
 const { prefix } = config;
 const name = `${prefix}-pull-down-refresh`;
 let PullDownRefresh = class PullDownRefresh extends SuperComponent {
@@ -18,6 +19,7 @@ let PullDownRefresh = class PullDownRefresh extends SuperComponent {
         this.isPulling = false;
         this.maxRefreshAnimateTimeFlag = 0;
         this.closingAnimateTimeFlag = 0;
+        this.refreshStatusTimer = null;
         this.externalClasses = [`${prefix}-class`, `${prefix}-class-loading`, `${prefix}-class-text`, `${prefix}-class-indicator`];
         this.options = {
             multipleSlots: true,
@@ -29,6 +31,7 @@ let PullDownRefresh = class PullDownRefresh extends SuperComponent {
             },
         };
         this.properties = props;
+        this.behaviors = [useCustomNavbar];
         this.data = {
             prefix,
             classPrefix: name,
@@ -43,7 +46,7 @@ let PullDownRefresh = class PullDownRefresh extends SuperComponent {
         };
         this.lifetimes = {
             attached() {
-                const { screenWidth } = wx.getSystemInfoSync();
+                const { screenWidth } = systemInfo;
                 const { loadingTexts, maxBarHeight, loadingBarHeight } = this.properties;
                 this.setData({
                     _maxBarHeight: unitConvert(maxBarHeight),
@@ -57,6 +60,7 @@ let PullDownRefresh = class PullDownRefresh extends SuperComponent {
             detached() {
                 clearTimeout(this.maxRefreshAnimateTimeFlag);
                 clearTimeout(this.closingAnimateTimeFlag);
+                this.resetTimer();
             },
         };
         this.observers = {
@@ -75,6 +79,12 @@ let PullDownRefresh = class PullDownRefresh extends SuperComponent {
                 }
             },
             barHeight(val) {
+                this.resetTimer();
+                if (val === 0 && this.data.refreshStatus !== -1) {
+                    this.refreshStatusTimer = setTimeout(() => {
+                        this.setData({ refreshStatus: -1 });
+                    }, 240);
+                }
                 this.setData({ tipsHeight: Math.min(val, this.data._loadingBarHeight) });
             },
             maxBarHeight(v) {
@@ -85,6 +95,12 @@ let PullDownRefresh = class PullDownRefresh extends SuperComponent {
             },
         };
         this.methods = {
+            resetTimer() {
+                if (this.refreshStatusTimer) {
+                    clearTimeout(this.refreshStatusTimer);
+                    this.refreshStatusTimer = null;
+                }
+            },
             onScrollToBottom() {
                 this.triggerEvent('scrolltolower');
             },
@@ -143,20 +159,14 @@ let PullDownRefresh = class PullDownRefresh extends SuperComponent {
                 }
             },
             onDragStart(e) {
-                if (this.properties.disabled)
-                    return;
                 const { scrollTop, scrollLeft } = e.detail;
                 this.triggerEvent('dragstart', { scrollTop, scrollLeft });
             },
             onDragging(e) {
-                if (this.properties.disabled)
-                    return;
                 const { scrollTop, scrollLeft } = e.detail;
                 this.triggerEvent('dragging', { scrollTop, scrollLeft });
             },
             onDragEnd(e) {
-                if (this.properties.disabled)
-                    return;
                 const { scrollTop, scrollLeft } = e.detail;
                 this.triggerEvent('dragend', { scrollTop, scrollLeft });
             },

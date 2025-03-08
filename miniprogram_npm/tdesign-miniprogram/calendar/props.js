@@ -14,15 +14,21 @@ const props = {
     format: {
         type: null,
     },
+    localeText: {
+        type: Object,
+    },
     maxDate: {
         type: Number,
     },
     minDate: {
         type: Number,
     },
+    switchMode: {
+        type: String,
+        value: 'none',
+    },
     title: {
         type: String,
-        value: '请选择日期',
     },
     type: {
         type: String,

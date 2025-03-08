@@ -50,6 +50,8 @@ let CheckBox = class CheckBox extends SuperComponent {
         this.properties = Object.assign(Object.assign({}, Props), { theme: {
                 type: String,
                 value: 'default',
+            }, tId: {
+                type: String,
             } });
         this.data = {
             prefix,
@@ -77,7 +79,7 @@ let CheckBox = class CheckBox extends SuperComponent {
                 const checked = !this.data.checked;
                 const parent = this.$parent;
                 if (parent) {
-                    parent.updateValue(Object.assign(Object.assign({}, this.data), { checked }));
+                    parent.updateValue(Object.assign(Object.assign({}, this.data), { checked, item: { label, value, checked } }));
                 }
                 else {
                     this._trigger('change', { context: { value, label }, checked });

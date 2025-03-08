@@ -1,7 +1,11 @@
 const props = {
+    autoClose: {
+        type: Boolean,
+        value: false,
+    },
     cancelBtn: {
         type: String,
-        value: '',
+        value: '取消',
     },
     confirmBtn: {
         type: String,
@@ -16,6 +20,9 @@ const props = {
     },
     externalClasses: {
         type: Array,
+    },
+    filter: {
+        type: null,
     },
     format: {
         type: String,

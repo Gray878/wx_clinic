@@ -1,5 +1,8 @@
 import { prefix } from './config';
-export const systemInfo = wx.getSystemInfoSync();
+import { getWindowInfo, getAppBaseInfo, getDeviceInfo } from './wechat';
+export const systemInfo = getWindowInfo();
+export const appBaseInfo = getAppBaseInfo();
+export const deviceInfo = getDeviceInfo();
 export const debounce = function (func, wait = 500) {
     let timerId;
     return function (...rest) {
@@ -99,6 +102,10 @@ export const isNull = function (value) {
 export const isUndefined = (value) => typeof value === 'undefined';
 export const isDef = function (value) {
     return !isUndefined(value) && !isNull(value);
+};
+export const isIOS = function () {
+    var _a;
+    return !!(((_a = deviceInfo === null || deviceInfo === void 0 ? void 0 : deviceInfo.system) === null || _a === void 0 ? void 0 : _a.toLowerCase().search('ios')) + 1);
 };
 export const addUnit = function (value) {
     if (!isDef(value)) {
@@ -213,7 +220,7 @@ export const uniqueFactory = (compName) => {
     return () => `${prefix}_${compName}_${number++}`;
 };
 export const calcIcon = (icon, defaultIcon) => {
-    if ((isBool(icon) && icon && defaultIcon) || isString(icon)) {
+    if (icon && ((isBool(icon) && defaultIcon) || isString(icon))) {
         return { name: isBool(icon) ? defaultIcon : icon };
     }
     if (isObject(icon)) {

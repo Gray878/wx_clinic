@@ -21,6 +21,7 @@ refresh-timeout | Number | 3000 | \- | N
 scroll-into-view | String | - | `1.1.5` | N
 show-scrollbar | Boolean | true | \- | N
 upper-threshold | String / Number | 50 | `1.1.5` | N
+using-custom-navbar | Boolean | false | \- | N
 value | Boolean | false | \- | N
 default-value | Boolean | undefined | uncontrolled property | N
 

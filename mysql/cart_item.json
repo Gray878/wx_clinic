@@ -1,0 +1,212 @@
+{
+    "previewTableName": "lcap-shop_cart_item-preview",
+    "publishCacheStatus": "notready",
+    "subType": "database",
+    "schema": {
+        "x-primary-column": "_id",
+        "x-kind": "tcb",
+        "x-defaultMethods": [
+            "wedaCreate",
+            "wedaUpdate",
+            "wedaDelete",
+            "wedaGetItem",
+            "wedaGetRecords",
+            "wedaGetList",
+            "wedaBatchCreate",
+            "wedaBatchUpdate",
+            "wedaBatchDelete"
+        ],
+        "type": "object",
+        "x-relatedType": "exist",
+        "title": "电商购物车项",
+        "x-viewId": "view-6kjf82g800",
+        "required": [
+            "count"
+        ],
+        "properties": {
+            "owner": {
+                "default": "",
+                "x-system": true,
+                "x-id": "5cc1bb8",
+                "name": "owner",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 4,
+                "title": "所有人",
+                "type": "string",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "createdAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "0c587ec",
+                "format": "datetime",
+                "x-index": 2,
+                "type": "number",
+                "title": "创建时间",
+                "x-unique": false
+            },
+            "createBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "0efacf4",
+                "name": "createBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 5,
+                "type": "string",
+                "title": "创建人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "updateBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "93a079a",
+                "name": "updateBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 6,
+                "type": "string",
+                "title": "修改人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "ad436e8",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "_openid": {
+                "default": "",
+                "x-system": true,
+                "x-id": "df2fe41",
+                "name": "_openid",
+                "format": "",
+                "pattern": "",
+                "description": "仅微信云开发下使用",
+                "x-index": 45,
+                "title": "记录创建者",
+                "type": "string",
+                "x-unique": false
+            },
+            "count": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "edacf8f2",
+                "format": "",
+                "description": "",
+                "type": "number",
+                "x-index": 2,
+                "title": "数量",
+                "minimum": 0,
+                "x-unique": false
+            },
+            "_id": {
+                "default": "",
+                "x-system": true,
+                "x-id": "6899fd0",
+                "format": "",
+                "pattern": "",
+                "x-index": 1,
+                "type": "string",
+                "title": "数据标识",
+                "x-unique": true
+            },
+            "sku": {
+                "x-id": "3lmrqhub",
+                "format": "many-one",
+                "name": "sku",
+                "deleteWay": "doNothing",
+                "type": "object",
+                "title": "SKU",
+                "required": [],
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                },
+                "x-parent": {
+                    "parentFieldKey": "cart_item",
+                    "parentFieldTitle": "购物车项",
+                    "parentDataSourceName": "shop_sku"
+                }
+            },
+            "user": {
+                "x-keyPath": "",
+                "x-id": "a8ddf68d",
+                "format": "one-one",
+                "description": "",
+                "type": "object",
+                "x-index": 47,
+                "title": "用户",
+                "x-unique": true,
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "cart_item",
+                    "parentFieldTitle": "购物车项",
+                    "parentDataSourceName": "shop_user"
+                },
+                "x-required": false,
+                "name": "user",
+                "deleteWay": "doNothing",
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                }
+            },
+            "updatedAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "b70b7cb",
+                "format": "datetime",
+                "x-index": 3,
+                "title": "更新时间",
+                "type": "number",
+                "x-unique": false
+            }
+        }
+    },
+    "dbInstanceType": "MYSQL",
+    "title": "服务购物车项",
+    "name": "shop_cart_item",
+    "dbLinkType": "internal",
+    "tableNameRule": "has_lcap",
+    "type": "database",
+    "childDataSourceNames": null,
+    "updateTime": "2025-03-07T04:18:22",
+    "publishedTableName": "lcap-shop_cart_item",
+    "id": "data-4x8b7sbTB",
+    "dbSourceType": "internal_mysql",
+    "methods": [],
+    "fun": "{\"onlineVersion\": 10, \"previewVersion\": 9, \"onlinePublishAt\": 1741321102400, \"prviewPublishAt\": 1741321095217}",
+    "publishStatus": 1,
+    "configuration": {}
+}

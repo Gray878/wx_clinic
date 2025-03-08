@@ -1,8 +1,5 @@
+import { SizeEnum } from '../common/common';
 export interface TdStepperProps {
-    style?: {
-        type: StringConstructor;
-        value?: string;
-    };
     disableInput?: {
         type: BooleanConstructor;
         value?: boolean;
@@ -11,13 +8,13 @@ export interface TdStepperProps {
         type: BooleanConstructor;
         value?: boolean;
     };
-    externalClasses?: {
-        type: ArrayConstructor;
-        value?: ['t-class', 't-class-input', 't-class-add', 't-class-minus'];
-    };
     inputWidth?: {
         type: NumberConstructor;
         value?: number;
+    };
+    integer?: {
+        type: BooleanConstructor;
+        value?: boolean;
     };
     max?: {
         type: NumberConstructor;
@@ -27,26 +24,24 @@ export interface TdStepperProps {
         type: NumberConstructor;
         value?: number;
     };
+    size?: {
+        type: StringConstructor;
+        value?: SizeEnum;
+    };
     step?: {
         type: NumberConstructor;
         value?: number;
-    };
-    size?: {
-        type: StringConstructor;
-        value?: string;
     };
     theme?: {
         type: StringConstructor;
         value?: 'normal' | 'filled' | 'outline';
     };
     value?: {
-        type: StringConstructor;
-        optionalTypes: Array<NumberConstructor>;
+        type: null;
         value?: string | number;
     };
     defaultValue?: {
-        type: StringConstructor;
-        optionalTypes: Array<NumberConstructor>;
+        type: null;
         value?: string | number;
     };
 }

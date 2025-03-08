@@ -13,7 +13,6 @@
         <view class="rating-stars">
           <t-icon name="star-filled" size="30rpx" color="#FFD700" wx:for="{{hospital.rating}}" wx:key="index" />
         </view>
-        <text class="rating-count">({{hospital.rating_count || 0}})</text>
       </view>
     </view>
   </view>

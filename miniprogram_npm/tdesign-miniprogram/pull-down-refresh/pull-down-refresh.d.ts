@@ -8,6 +8,7 @@ export default class PullDownRefresh extends SuperComponent {
     isPulling: boolean;
     maxRefreshAnimateTimeFlag: number;
     closingAnimateTimeFlag: number;
+    refreshStatusTimer: any;
     externalClasses: string[];
     options: {
         multipleSlots: boolean;
@@ -15,6 +16,7 @@ export default class PullDownRefresh extends SuperComponent {
     };
     relations: RelationsOptions;
     properties: import("./type").TdPullDownRefreshProps;
+    behaviors: string[];
     data: {
         prefix: string;
         classPrefix: string;
@@ -38,6 +40,7 @@ export default class PullDownRefresh extends SuperComponent {
         loadingBarHeight(v: any): void;
     };
     methods: {
+        resetTimer(): void;
         onScrollToBottom(): void;
         onScrollToTop(): void;
         onScroll(e: any): void;

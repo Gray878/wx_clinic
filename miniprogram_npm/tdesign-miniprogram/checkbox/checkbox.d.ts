@@ -9,6 +9,9 @@ export default class CheckBox extends SuperComponent {
             type: StringConstructor;
             value: string;
         };
+        tId: {
+            type: StringConstructor;
+        };
         block?: {
             type: BooleanConstructor;
             value?: boolean;
@@ -40,10 +43,6 @@ export default class CheckBox extends SuperComponent {
         disabled?: {
             type: BooleanConstructor;
             value?: boolean;
-        };
-        externalClasses?: {
-            type: ArrayConstructor;
-            value?: ["t-class", "t-class-icon", "t-class-label", "t-class-content", "t-class-border"];
         };
         icon?: {
             type: null;

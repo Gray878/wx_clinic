@@ -111,10 +111,9 @@
     --td-component-stroke: var(--td-gray-color-3);
     --td-border-level-2-color: var(--td-gray-color-4);
     --td-component-border: var(--td-gray-color-4);
-    --td-shadow-1: 0 1px 10px rgba(0, 0, 0, 0.05), 0 4px 5px rgba(0, 0, 0, 8%), 0 2px 4px -1px rgba(0, 0, 0, 12%);
-    --td-shadow-2: 0 3px 14px 2px rgba(0, 0, 0, 0.05), 0 8px 10px 1px rgba(0, 0, 0, 6%), 0 5px 5px -3px rgba(0, 0, 0, 10%);
-    --td-shadow-3: 0 6px 30px 5px rgba(0, 0, 0, 0.05), 0 16px 24px 2px rgba(0, 0, 0, 4%),
-      0 8px 10px -5px rgba(0, 0, 0, 8%);
+    --td-shadow-1: 0 1px 10px rgba(0, 0, 0, 0.05), 0 4px 5px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.12);
+    --td-shadow-2: 0 3px 14px 2px rgba(0, 0, 0, 0.05), 0 8px 10px 1px rgba(0, 0, 0, 0.06), 0 5px 5px -3px rgba(0, 0, 0, 0.1);
+    --td-shadow-3: 0 6px 30px 5px rgba(0, 0, 0, 0.05), 0 16px 24px 2px rgba(0, 0, 0, 0.04), 0 8px 10px -5px rgba(0, 0, 0, 0.08);
     --td-shadow-4: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
     --td-shadow-inset-top: inset 0 0.5px 0 #dcdcdc;
     --td-shadow-inset-right: inset 0.5px 0 0 #dcdcdc;
@@ -230,16 +229,16 @@
     --td-text-color-secondary: var(--td-font-white-2);
     --td-text-color-placeholder: var(--td-font-white-3);
     --td-text-color-disabled: var(--td-font-white-4);
-    --td-text-color-anti: var(--td-font-gray-1);
+    --td-text-color-anti: var(--td-font-white-1);
     --td-text-color-brand: var(--td-primary-color-8);
     --td-text-color-link: var(--td-primary-color-8);
     --td-border-level-1-color: var(--td-gray-color-11);
     --td-component-stroke: var(--td-gray-color-11);
     --td-border-level-2-color: var(--td-gray-color-9);
     --td-component-border: var(--td-gray-color-9);
-    --td-shadow-1: 0 4px 6px rgba(0, 0, 0, 0.06), 0 1px 10px rgba(0, 0, 0, 8%), 0 2px 4px rgba(0, 0, 0, 12%);
-    --td-shadow-2: 0 8px 10px rgba(0, 0, 0, 0.12), 0 3px 14px rgba(0, 0, 0, 10%), 0 5px 5px rgba(0, 0, 0, 16%);
-    --td-shadow-3: 0 16px 24px rgba(0, 0, 0, 0.14), 0 6px 30px rgba(0, 0, 0, 12%), 0 8px 10px rgba(0, 0, 0, 20%);
+    --td-shadow-1: 0 4px 6px rgba(0, 0, 0, 0.06), 0 1px 10px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.12);
+    --td-shadow-2: 0 8px 10px rgba(0, 0, 0, 0.12), 0 3px 14px rgba(0, 0, 0, 0.1), 0 5px 5px rgba(0, 0, 0, 0.16);
+    --td-shadow-3: 0 16px 24px rgba(0, 0, 0, 0.14), 0 6px 30px rgba(0, 0, 0, 0.12), 0 8px 10px rgba(0, 0, 0, 0.2);
     --td-shadow-inset-top: inset 0 0.5px 0 #5e5e5e;
     --td-shadow-inset-right: inset 0.5px 0 0 #5e5e5e;
     --td-shadow-inset-bottom: inset 0 -0.5px 0 #5e5e5e;
@@ -262,13 +261,34 @@ page,
 .page {
   --td-font-family: PingFang SC, Microsoft YaHei, Arial Regular;
   --td-font-family-medium: PingFang SC, Microsoft YaHei, Arial Medium;
+  --td-font-size-link-small: 24rpx;
+  --td-font-size-link-medium: 28rpx;
+  --td-font-size-link-large: 32rpx;
+  --td-font-size-mark-extra-small: 20rpx;
+  --td-font-size-mark-small: 24rpx;
+  --td-font-size-mark-medium: 28rpx;
+  --td-font-size-mark-large: 32rpx;
+  --td-font-size-body-extra-small: 20rpx;
+  --td-font-size-body-small: 24rpx;
+  --td-font-size-body-medium: 28rpx;
+  --td-font-size-body-large: 32rpx;
+  --td-font-size-title-small: 28rpx;
+  --td-font-size-title-medium: 32rpx;
+  --td-font-size-title-large: 36rpx;
+  --td-font-size-title-extra-large: 40rpx;
+  --td-font-size-headline-small: 48rpx;
+  --td-font-size-headline-medium: 56rpx;
+  --td-font-size-headline-large: 72rpx;
+  --td-font-size-display-medium: 96rpx;
+  --td-font-size-display-large: 128rpx;
   --td-font-size: 20rpx;
-  --td-font-size-xs: var(--td-font-size);
-  --td-font-size-s: 24rpx;
-  --td-font-size-base: 28rpx;
-  --td-font-size-m: 32rpx;
-  --td-font-size-l: 40rpx;
-  --td-font-size-xl: 72rpx;
+  --td-font-size-xs: var(--td-font-size-body-extra-small);
+  --td-font-size-s: var(--td-font-size-body-small);
+  --td-font-size-base: var(--td-font-size-title-small);
+  --td-font-size-m: var(--td-font-size-title-medium);
+  --td-font-size-l: var(--td-font-size-title-large);
+  --td-font-size-xl: var(--td-font-size-title-extra-large);
+  --td-font-size-xxl: var(--td-font-size-headline-large);
 }
 page,
 .page {
@@ -280,6 +300,12 @@ page,
   --td-spacer-5: 96rpx;
   --td-spacer-6: 160rpx;
 }
+@media (prefers-color-scheme: light) {
+  page,
+  .page {
+    --td-picker-transparent-color: rgba(255, 255, 255, 0);
+  }
+}
 @media (prefers-color-scheme: dark) {
   page,
   .page {
@@ -288,5 +314,6 @@ page,
     --td-slider-dot-bg-color: var(--td-gray-color-4);
     --td-slider-dot-disabled-bg-color: var(--td-gray-color-11);
     --td-slider-dot-disabled-border-color: var(--td-gray-color-12);
+    --td-picker-transparent-color: transparent;
   }
 }

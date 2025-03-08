@@ -57,21 +57,21 @@ let Input = class Input extends SuperComponent {
                     _clearIcon: calcIcon(v, 'close-circle-filled'),
                 });
             },
-            clearTrigger() {
+            'clearTrigger, clearable, disabled, readonly'() {
                 this.updateClearIconVisible();
             },
         };
         this.methods = {
             updateValue(value) {
-                const { maxcharacter, maxlength } = this.properties;
-                if (maxcharacter && maxcharacter > 0 && !Number.isNaN(maxcharacter)) {
+                const { allowInputOverMax, maxcharacter, maxlength } = this.properties;
+                if (!allowInputOverMax && maxcharacter && maxcharacter > 0 && !Number.isNaN(maxcharacter)) {
                     const { length, characters } = getCharacterLength('maxcharacter', value, maxcharacter);
                     this.setData({
                         value: characters,
                         count: length,
                     });
                 }
-                else if (maxlength && maxlength > 0 && !Number.isNaN(maxlength)) {
+                else if (!allowInputOverMax && maxlength && maxlength > 0 && !Number.isNaN(maxlength)) {
                     const { length, characters } = getCharacterLength('maxlength', value, maxlength);
                     this.setData({
                         value: characters,
@@ -86,7 +86,11 @@ let Input = class Input extends SuperComponent {
                 }
             },
             updateClearIconVisible(value = false) {
-                const { clearTrigger } = this.properties;
+                const { clearTrigger, disabled, readonly } = this.properties;
+                if (disabled || readonly) {
+                    this.setData({ showClearIcon: false });
+                    return;
+                }
                 this.setData({ showClearIcon: value || clearTrigger === 'always' });
             },
             onInput(e) {
@@ -100,6 +104,12 @@ let Input = class Input extends SuperComponent {
             },
             onBlur(e) {
                 this.updateClearIconVisible();
+                if (typeof this.properties.format === 'function') {
+                    const v = this.properties.format(e.detail.value);
+                    this.updateValue(v);
+                    this.triggerEvent('blur', { value: this.data.value, cursor: this.data.count });
+                    return;
+                }
                 this.triggerEvent('blur', e.detail);
             },
             onConfirm(e) {

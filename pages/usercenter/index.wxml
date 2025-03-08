@@ -1,30 +1,35 @@
 <view class="user-center">
   <!-- 用户信息区域 -->
-  <view class="user-info">
-    <t-user-center-card
-      userInfo="{{userInfo}}"
-      isPhoneHide="{{true}}"
-      name-class="custom-name-class"
-      phone-class="custom-phone-class"
-      avatar-class="custom-avatar-class"
-      background-image="{{userCenterBg}}"
-      bind:gotoUserDetail="gotoUserEditPage"
-    />
+  <view class="user-info-wrapper">
+    <!-- 使用自定义的背景图片或默认背景 -->
+    <image class="user-center-bg" src="{{userInfo.bgImage || 'https://cdn-we-retail.ym.tencent.com/miniapp/usercenter/user-center-bg.png'}}" mode="aspectFill" />
+    
+    <view class="user-info" bindtap="gotoUserEditPage">
+      <view class="user-info-left">
+        <view class="avatar-wrapper">
+          <image class="avatar" src="{{userInfo.avatarUrl || 'https://cdn-we-retail.ym.tencent.com/miniapp/usercenter/icon-user.png'}}" mode="aspectFill" />
+        </view>
+        <view class="user-name-wrapper">
+          <view class="user-name">{{userInfo.nickName || '未登录'}}</view>
+          <view class="edit-info">点击编辑个人信息 ></view>
+        </view>
+      </view>
+    </view>
   </view>
 
-  <!-- 账户信息 -->
-  <view class="account-info">
-    <view class="info-item">
-      <view class="amount">{{accountInfo.balance || '0'}}</view>
-      <view class="label">余额</view>
+  <!-- 用户数据统计 -->
+  <view class="user-data-wrapper">
+    <view class="user-data-item">
+      <view class="data-value">{{userInfo.balance || '0.00'}}</view>
+      <view class="data-title">余额</view>
     </view>
-    <view class="info-item">
-      <view class="amount">{{accountInfo.points || '0'}}</view>
-      <view class="label">积分</view>
+    <view class="user-data-item">
+      <view class="data-value">{{userInfo.points || '0'}}</view>
+      <view class="data-title">积分</view>
     </view>
-    <view class="info-item" bindtap="goCouponList">
-      <view class="amount">{{accountInfo.couponCount || '0'}}</view>
-      <view class="label">优惠券</view>
+    <view class="user-data-item">
+      <view class="data-value">{{userInfo.coupons || '0'}}</view>
+      <view class="data-title">优惠券</view>
     </view>
   </view>
 
@@ -86,4 +91,18 @@
     </t-cell-group>
   </view>
 </view>
+
+<!-- 登录对话框 -->
+<block wx:if="{{showLoginDialog}}">
+  <view class="login-dialog-mask" bindtap="closeLoginDialog"></view>
+  <view class="login-dialog">
+    <view class="login-dialog-title">登录提示</view>
+    <view class="login-dialog-content">登录后可查看个人信息和订单等数据</view>
+    <view class="login-dialog-btns">
+      <button class="login-dialog-cancel" bindtap="closeLoginDialog">取消</button>
+      <button class="login-dialog-confirm" bindtap="handleLogin">登录</button>
+    </view>
+  </view>
+</block>
+
 <t-toast id="t-toast" />

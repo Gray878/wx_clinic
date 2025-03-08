@@ -18,6 +18,7 @@ import props from './props';
 import config from '../common/config';
 import touch from '../mixins/touch';
 import { getRect, uniqueFactory } from '../common/utils';
+import { getObserver } from '../common/wechat';
 const { prefix } = config;
 const name = `${prefix}-tabs`;
 const getUniqueID = uniqueFactory('tabs');
@@ -124,7 +125,7 @@ let Tabs = class Tabs extends SuperComponent {
                 const Labels = [];
                 this.children.forEach((child, idx) => {
                     const isActive = index === idx;
-                    if (isActive !== child.data.active) {
+                    if (isActive !== child.data.active || !child.initialized) {
                         child.render(isActive, this);
                     }
                     Labels.push(child.data.label);
@@ -198,6 +199,10 @@ let Tabs = class Tabs extends SuperComponent {
                             this.setData({
                                 offset: Math.min(Math.max(offset, 0), maxOffset),
                             });
+                        }
+                        else if (!this._hasObserved) {
+                            this._hasObserved = true;
+                            getObserver(this, `.${name}`).then(() => this.setTrack());
                         }
                         if (this.data.theme === 'line') {
                             const trackLineWidth = yield this.getTrackSize();
