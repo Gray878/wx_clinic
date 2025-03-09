@@ -98,7 +98,10 @@ Page({
   },
 
   onLoad() {
-    this.getTabBar()?.init();
+    const tabBar = this.getTabBar();
+    if (tabBar) {
+      tabBar.init();
+    }
   },
 
   onShow() {
@@ -361,11 +364,13 @@ Page({
           
           // 5. 更新本地存储
           const userInfo = {
-            _id: dbUser._id || dbUser.Id || dbUser.id || '',  // 兼容多种ID字段名
+            _id: dbUser._id || dbUser.Id || dbUser.id || '',
             nickName: userInfoFromWx.nickName,
             avatarUrl: userInfoFromWx.avatarUrl,
             gender: userInfoFromWx.gender,
-            openid: openid
+            openid: openid,
+            bgImage: dbUser.bg_image || '',
+            phone: dbUser.phone || ''
           };
           
           console.log('即将保存到本地的用户信息:', userInfo);

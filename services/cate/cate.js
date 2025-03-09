@@ -43,7 +43,7 @@ export async function getAllSpuOfCate(cateId) {
 
 export async function getCates() {
   if (cloudbaseTemplateConfig.useMock) {
-    return CATEGORY.filter((x) => x.child_cate?.length > 0);
+    return CATEGORY;
   }
   const cateSelect = {
     _id: true,
@@ -51,17 +51,15 @@ export async function getCates() {
     image: true,
   };
 
-  const allCates = (
-    await getAll({
-      name: CATE_MODEL_KEY,
-      select: {
-        ...cateSelect,
-        child_cate: cateSelect,
-      },
-    })
-  ).filter((c) => c.child_cate.length !== 0);
+  const allCates = await getAll({
+    name: CATE_MODEL_KEY,
+    select: {
+      ...cateSelect,
+      child_cate: cateSelect,
+    },
+  });
 
-  const childCates = allCates.flatMap((c) => c.child_cate);
+  const childCates = allCates.flatMap((c) => c.child_cate || []);
   const res = await getCloudImageTempUrl(childCates.map((x) => x.image));
   res.forEach((image, index) => (childCates[index].image = image));
   return allCates;

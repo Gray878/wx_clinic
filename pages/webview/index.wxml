@@ -1,0 +1,6 @@
+<view class="webview-container">
+  <view class="loading" wx:if="{{loading}}">
+    <t-loading theme="circular" size="80rpx" text="加载中..." inherit-color />
+  </view>
+  <web-view wx:if="{{url}}" src="{{url}}" bindload="onWebviewLoad" binderror="onWebviewError"></web-view>
+</view> 

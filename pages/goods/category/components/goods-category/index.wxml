@@ -19,6 +19,30 @@
           </block>
         </view>
       </view>
+      <view class="goods-category-normal-item" wx:else>
+        <view class="no-child-cate-tip">当前显示"{{category[activeKey].name}}"的服务列表</view>
+        <view class="goods-list">
+          <view 
+            class="goods-card" 
+            wx:for="{{spuList}}" 
+            wx:key="index" 
+            bindtap="onTapSpu" 
+            data-spu="{{item}}"
+          >
+            <view class="goods-card-image">
+              <t-image 
+                src="{{item.swiper_images && item.swiper_images.length > 0 ? item.swiper_images[0] : ''}}" 
+                t-class="spu-image" 
+                mode="aspectFill"
+              />
+            </view>
+            <view class="goods-card-info">
+              <view class="goods-card-title">{{item.name}}</view>
+              <view class="order-button" catchtap="onTapOrder" data-spu="{{item}}">立即下单</view>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </view>

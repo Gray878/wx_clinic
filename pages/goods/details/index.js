@@ -379,12 +379,15 @@ Page({
 
     records.forEach((x) => (x.userNameString = x.createBy.substring(0, 10)));
 
-    const detail = await replaceCloudImageWithTempUrl(spu.detail);
+    let detail = await replaceCloudImageWithTempUrl(spu.detail);
+    // 处理富文本中的图片样式
+    detail = detail.replace(/<img/gi, '<img style="width:100% !important;max-width:100% !important;height:auto !important;display:block !important;margin:0 auto !important;box-sizing:border-box !important;"');
 
     this.setData({
       details: {
         images: spu.swiper_images,
         title: spu.name,
+        notion: spu.notion,
       },
       minSalePrice: minPrice,
       detail,

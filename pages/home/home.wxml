@@ -12,22 +12,32 @@
       t-class="notice-bar__inner"
       t-class-content="notice-bar__content"
     >
-      <t-icon slot="prefix-icon" name="notification" size="44rpx" />
+      <t-icon slot="prefix-icon" name="notification" size="36rpx" />
     </t-notice-bar>
   </view>
 
   <!-- 轮播图 -->
   <view class="swiper-wrap">
-    <t-swiper 
+    <swiper 
       wx:if="{{imgSrcs.length > 0}}" 
       current="{{current}}" 
       autoplay="{{autoplay}}" 
       duration="{{duration}}" 
       interval="{{interval}}" 
-      navigation="{{navigation}}" 
-      imageProps="{{swiperImageProps}}" 
-      list="{{imgSrcs}}" 
-    />
+      circular
+      indicator-dots="{{true}}"
+      indicator-color="rgba(0, 0, 0, .3)"
+      indicator-active-color="#000000"
+      class="swiper-container"
+      bindchange="onSwiperChange"
+    >
+      <swiper-item wx:for="{{imgSrcs}}" wx:key="index" class="swiper-item-wrap">
+        <view class="swiper-item" data-index="{{index}}" bindtap="onSwiperItemClick">
+          <image src="{{item.image}}" mode="aspectFill" class="swiper-image" />
+          <view class="swiper-title" wx:if="{{item.title}}">{{item.title}}</view>
+        </view>
+      </swiper-item>
+    </swiper>
   </view>
 
   <!-- 城市选择区域 -->

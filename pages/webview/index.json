@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "网页浏览",
+  "usingComponents": {
+    "t-loading": "tdesign-miniprogram/loading/loading"
+  }
+} 

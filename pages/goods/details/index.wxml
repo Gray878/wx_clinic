@@ -1,6 +1,6 @@
 <view class="goods-detail-page">
   <view class="goods-head">
-    <t-swiper wx:if="{{details.images.length > 0}}" height="750rpx" current="{{current}}" autoplay="{{autoplay}}" duration="{{duration}}" interval="{{interval}}" navigation="{{navigation}}" list="{{details.images}}"></t-swiper>
+    <t-swiper wx:if="{{details.images.length > 0}}" height="500rpx" current="{{current}}" autoplay="{{autoplay}}" duration="{{duration}}" interval="{{interval}}" navigation="{{navigation}}" list="{{details.images}}" image-props="{{ {mode: 'aspectFit'} }}"></t-swiper>
     <view class="goods-info">
       <view class="goods-number">
         <view class="goods-price">
@@ -11,6 +11,7 @@
       <view class="goods-title">
         <view class="goods-name">{{details.title}}</view>
       </view>
+      <view class="goods-notion" wx:if="{{details.notion}}">{{details.notion}}</view>
     </view>
     <view class="spu-select" bindtap="onSpecSelectTap">
       <view class="label">已选</view>
@@ -50,8 +51,8 @@
       <span class="desc-content__title--text">详情介绍</span>
       <t-image t-class="img" src="{{recRightImg}}" />
     </view>
-    <view wx:if="{{details.desc.length > 0}}" wx:for="{{details.desc}}" wx:key="index">
-      <t-image t-class="desc-content__img" src="{{item}}" mode="widthFix" />
+    <view wx:if="{{details.desc.length > 0}}" wx:for="{{details.desc}}" wx:key="index" class="desc-image-container">
+      <t-image t-class="desc-content__img" src="{{item}}" mode="aspectFit" />
     </view>
     <rich-text class="detail" nodes="{{detail}}" />
   </view>

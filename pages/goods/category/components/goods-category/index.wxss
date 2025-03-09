@@ -100,3 +100,115 @@
   font-size: 24rpx;
   color: #222427;
 }
+
+.spu-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.spu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #eee;
+  background-color: #fff;
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.05);
+}
+
+.spu-name {
+  font-size: 32rpx;
+  color: #333;
+  flex: 1;
+}
+
+.spu-price {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #26a69a;
+  margin-right: 20rpx;
+}
+
+.order-button {
+  padding: 14rpx 36rpx;
+  background-color: #26a69a;
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  display: inline-block;
+  text-align: center;
+  align-self: flex-start;
+}
+
+/* 无子分类时的提示 */
+.no-child-cate-tip {
+  font-size: 28rpx;
+  color: #999;
+  padding: 20rpx 0;
+  margin-bottom: 16rpx;
+}
+
+/* 商品列表布局 */
+.goods-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.goods-card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.goods-card-image {
+  width: 220rpx;
+  height: 220rpx;
+  overflow: hidden;
+  border-radius: 10rpx;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.spu-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.goods-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220rpx;
+  overflow: hidden;
+  padding: 10rpx 0;
+}
+
+.goods-card-title {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-weight: 500;
+}
+
+/* 保留旧的网格样式，但不使用 */
+.goods-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}

@@ -120,19 +120,48 @@ Page({
 
   async loadHomeSwiper() {
     try {
-    const { images } = await getHomeSwiper();
-    const handledImages = await getCloudImageTempUrl(images);
-    this.setData({ imgSrcs: handledImages });
+      const res = await getHomeSwiper();
+      console.log('轮播图数据:', res);
+      
+      // 确保有图片数据
+      if (res && res.images && res.images.length > 0) {
+        // 检查并处理每个图片项
+        const processedImages = res.images.map(item => {
+          // 确保图片链接存在
+          if (!item.image) {
+            console.warn('图片链接不存在:', item);
+            return null;
+          }
+          return item;
+        }).filter(item => item !== null);
+        
+        if (processedImages.length > 0) {
+          this.setData({ imgSrcs: processedImages });
+        } else {
+          // 设置默认轮播图
+          this.setDefaultSwiper();
+        }
+      } else {
+        // 设置默认轮播图
+        this.setDefaultSwiper();
+      }
     } catch (error) {
       console.error('加载轮播图失败', error);
       // 设置默认轮播图
-      this.setData({
-        imgSrcs: [{
-          img: 'https://cdn-we-retail.ym.tencent.com/miniapp/home/banner1.png',
-          type: 'image'
-        }]
-      });
+      this.setDefaultSwiper();
     }
+  },
+
+  // 设置默认轮播图
+  setDefaultSwiper() {
+    this.setData({
+      imgSrcs: [{
+        image: 'https://cdn-we-retail.ym.tencent.com/miniapp/home/banner1.png',
+        title: '默认轮播图',
+        url: '',
+        img_url: ''
+      }]
+    });
   },
 
   onReTry() {
@@ -422,5 +451,74 @@ Page({
   // 关闭登录弹窗
   closeLoginPopup() {
     this.setData({ showLoginPopup: false });
+  },
+
+  // 处理轮播图点击
+  onSwiperItemClick(e) {
+    const { index } = e.currentTarget.dataset;
+    const item = this.data.imgSrcs[index];
+    
+    console.log('点击轮播图:', index, item);
+    
+    if (!item) {
+      console.warn('轮播图项不存在');
+      return;
+    }
+    
+    // 检查是否有链接
+    let targetUrl = '';
+    if (item.url) {
+      targetUrl = item.url;
+    } else if (item.img_url) {
+      targetUrl = item.img_url;
+    }
+    
+    // 如果没有链接，不执行任何操作
+    if (!targetUrl) {
+      console.log('轮播图没有跳转链接');
+      return;
+    }
+    
+    console.log('准备跳转到:', targetUrl);
+    
+    // 判断链接类型并进行相应跳转
+    if (targetUrl.startsWith('/pages/')) {
+      // 内部页面跳转
+      wx.navigateTo({
+        url: targetUrl,
+        fail: (err) => {
+          console.error('页面跳转失败(navigateTo):', err);
+          // 如果navigateTo失败，尝试switchTab
+          wx.switchTab({
+            url: targetUrl,
+            fail: (switchErr) => {
+              console.error('页面跳转失败(switchTab):', switchErr);
+              wx.showToast({
+                title: '页面跳转失败',
+                icon: 'none'
+              });
+            }
+          });
+        }
+      });
+    } else {
+      // 外部链接，使用web-view打开
+      const webviewUrl = `/pages/webview/index?url=${encodeURIComponent(targetUrl)}`;
+      console.log('跳转到webview:', webviewUrl);
+      
+      wx.navigateTo({
+        url: webviewUrl,
+        success: () => {
+          console.log('成功打开webview');
+        },
+        fail: (err) => {
+          console.error('打开链接失败:', err);
+          wx.showToast({
+            title: '打开链接失败',
+            icon: 'none'
+          });
+        }
+      });
+    }
   }
 });

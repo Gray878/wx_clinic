@@ -31,7 +31,8 @@
     "pages/order/invoice/index",
     "pages/usercenter/name-edit/index",
     "pages/hospital/detail/index",
-    "pages/hospital/list/index"
+    "pages/hospital/list/index",
+    "pages/webview/index"
   ],
   "tabBar": {
     "custom": true,

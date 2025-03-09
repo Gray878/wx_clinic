@@ -109,7 +109,6 @@ export async function fetchCartItems() {
  */
 export async function createCartItem({ skuId, count }) {
   const userId = getCurrentUserId();
-  console.log("createCartItem: ", {skuId, count});
   if (!userId) {
     console.error('用户未登录，无法添加购物车');
     wx.showToast({
@@ -137,7 +136,6 @@ export async function createCartItem({ skuId, count }) {
     }
     return;
   }
-  console.log("cloudbaseTemplateConfig.useMock: ", cloudbaseTemplateConfig.useMock);
   // 检查是否已存在相同商品
   const cartItems = await getAll({
     name: CART_ITEM_MODEL_KEY,
@@ -152,14 +150,12 @@ export async function createCartItem({ skuId, count }) {
       }
     }
   });
-  console.log("cartItems1: ", cartItems);
   if (cartItems && cartItems.length > 0) {
     // 已存在则更新数量
     const cartItemId = cartItems[0]._id;
     const newCount = cartItems[0].count + count;
     return await updateCartItemCount({ cartItemId, count: newCount });
   } else {
-    console.log("cartItems2: ", cartItems);
     // 否则创建新项目
     return await model()[CART_ITEM_MODEL_KEY].create({
       data: {
