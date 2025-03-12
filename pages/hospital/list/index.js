@@ -162,7 +162,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '粤心陪诊 - 三甲医院',
+      title: '润民陪护  - 三甲医院',
       path: '/pages/hospital/list/index'
     };
   }

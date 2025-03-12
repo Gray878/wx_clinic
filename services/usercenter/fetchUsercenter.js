@@ -1,5 +1,6 @@
 import { config } from '../../config/index';
 import { getUserDetail, getLocalUserInfo } from '../user/user';
+import { fetchUserCoupons } from '../coupon/coupon';
 
 /** 获取个人中心信息 */
 function mockFetchUserCenter() {
@@ -69,14 +70,22 @@ export async function fetchUserCenter() {
   
   try {
     let userDetail = null;
+    let couponCount = 0;
     
+    // 获取用户详情
     if (localUserInfo._id) {
       userDetail = await getUserDetail(localUserInfo._id);
-    }
+      
+      // 获取用户未使用的优惠券数量
+      const coupons = await fetchUserCoupons(1);
+      couponCount = coupons.length;    }
     
     // 如果获取不到用户详情，则使用本地存储的信息
     if (!userDetail) {
-      return getDefaultUserCenterData(localUserInfo);
+      const defaultData = getDefaultUserCenterData(localUserInfo);
+      // 更新优惠券数量
+      defaultData.countsData.find(item => item.type === 'coupon').num = couponCount;
+      return defaultData;
     }
     
     return {
@@ -86,11 +95,12 @@ export async function fetchUserCenter() {
         phoneNumber: userDetail.phone || '',
         gender: userDetail.gender || 0,
         bgImage: userDetail.bg_image || '',
-        phone: userDetail.phone || ''
+        phone: userDetail.phone || '',
+        user_coupons: couponCount
       },
       countsData: [
         { num: userDetail.points || 0, name: '积分', type: 'point' },
-        { num: userDetail.coupons || 0, name: '优惠券', type: 'coupon' },
+        { num: couponCount, name: '优惠券', type: 'coupon' },
       ],
       orderTagInfos: [
         { orderNum: 0, tabType: 5 },

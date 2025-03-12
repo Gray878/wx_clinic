@@ -20,7 +20,6 @@
         </view>
       </view>
       <view class="goods-category-normal-item" wx:else>
-        <view class="no-child-cate-tip">当前显示"{{category[activeKey].name}}"的服务列表</view>
         <view class="goods-list">
           <view 
             class="goods-card" 

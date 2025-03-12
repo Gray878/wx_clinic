@@ -27,8 +27,8 @@
       <view class="data-value">{{userInfo.points || '0'}}</view>
       <view class="data-title">积分</view>
     </view>
-    <view class="user-data-item">
-      <view class="data-value">{{userInfo.coupons || '0'}}</view>
+    <view class="user-data-item" bindtap="onClickCell" data-type="coupon">
+      <view class="data-value">{{couponCount}}</view>
       <view class="data-title">优惠券</view>
     </view>
   </view>
@@ -86,6 +86,7 @@
         leftIcon="logout"
         hover
         arrow
+        bindtap="onClickCell"
         data-type="logout"
       />
     </t-cell-group>
@@ -94,13 +95,46 @@
 
 <!-- 登录对话框 -->
 <block wx:if="{{showLoginDialog}}">
-  <view class="login-dialog-mask" bindtap="closeLoginDialog"></view>
+  <view class="login-dialog-mask" bindtap="closeDialogByMask"></view>
   <view class="login-dialog">
     <view class="login-dialog-title">登录提示</view>
     <view class="login-dialog-content">登录后可查看个人信息和订单等数据</view>
     <view class="login-dialog-btns">
       <button class="login-dialog-cancel" bindtap="closeLoginDialog">取消</button>
       <button class="login-dialog-confirm" bindtap="handleLogin">登录</button>
+    </view>
+  </view>
+</block>
+
+<!-- 用户信息编辑弹窗 -->
+<block wx:if="{{showUserInfoDialog}}">
+  <view class="userinfo-dialog-mask" bindtap="closeDialogByMask"></view>
+  <view class="userinfo-dialog">
+    <view class="userinfo-dialog-title">完善个人信息</view>
+    <view class="userinfo-dialog-content">
+      <!-- 头像选择 -->
+      <view class="avatar-section">
+        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{tempUserInfo.avatarUrl || 'https://cdn-we-retail.ym.tencent.com/miniapp/usercenter/icon-user.png'}}"></image>
+        </button>
+        <view class="avatar-hint">点击选择头像</view>
+      </view>
+      
+      <!-- 昵称输入 -->
+      <view class="nickname-section">
+        <input 
+          type="nickname" 
+          class="nickname-input" 
+          placeholder="请输入昵称" 
+          placeholder-style="color: #999"
+          value="{{tempUserInfo.nickName}}" 
+          bindinput="onInputNickname"
+        />
+      </view>
+    </view>
+    <view class="userinfo-dialog-btns">
+      <button class="userinfo-dialog-cancel" bindtap="closeUserInfoDialog">取消</button>
+      <button class="userinfo-dialog-confirm" bindtap="submitUserInfo">确定</button>
     </view>
   </view>
 </block>

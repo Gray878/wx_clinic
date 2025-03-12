@@ -22,6 +22,7 @@
     "pages/order/after-service-detail/index",
     "pages/goods/comments/create/index",
     "pages/goods/comments/create-list/index",
+    "pages/coupon/index",
     "pages/coupon/coupon-list/index",
     "pages/coupon/coupon-detail/index",
     "pages/coupon/coupon-activity-goods/index",

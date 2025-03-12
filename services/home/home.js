@@ -15,7 +15,6 @@ export async function getHomeSwiper() {
 
   return {
     images: result.data.records.map(item => {
-      console.log('处理轮播图项:', item);
       return {
         // 图片字段可能是不同名称，检查多种可能性
         image: item.image || '',

@@ -11,5 +11,7 @@ export const DATA_MODEL_KEY = {
   SPU: 'shop_spu',
   CITY: 'server_city',
   HOSPITAL: 'hospital',
-  USER: 'shop_user'
+  USER: 'shop_user',
+  COUPON: 'coupons',
+  USER_COUPON: 'user_coupons'
 };

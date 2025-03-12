@@ -183,12 +183,12 @@ Page({
     const { hospital } = this.data;
     if (hospital) {
       return {
-        title: `${hospital.name} - 粤心陪诊`,
+        title: `${hospital.name} - 润民陪护 `,
         path: `/pages/hospital/detail/index?id=${hospital._id}`
       };
     }
     return {
-      title: '粤心陪诊 - 三甲医院',
+      title: '润民陪护  - 三甲医院',
       path: '/pages/home/home'
     };
   }

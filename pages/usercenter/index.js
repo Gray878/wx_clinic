@@ -4,6 +4,7 @@ import { ORDER_STATUS } from '../../services/order/order';
 import Toast from 'tdesign-miniprogram/toast/index';
 import { createUser, getUserByOpenid, updateUser, getOpenidByCode } from '../../services/user/user';
 import { cloudbaseTemplateConfig } from '../../config/index';
+import { fetchUserCoupons } from '../../services/coupon/coupon';
 
 const menuData = [
   [
@@ -95,6 +96,13 @@ Page({
     countsData: [],
     isLogin: false,
     showLoginDialog: false,
+    showUserInfoDialog: false,
+    tempUserInfo: {
+      avatarUrl: '',
+      nickName: '微信用户'
+    },
+    openid: '',
+    couponCount: 0,
   },
 
   onLoad() {
@@ -106,6 +114,7 @@ Page({
 
   onShow() {
     this.init();
+    this.getCouponCount();
   },
 
   onPullDownRefresh() {
@@ -151,9 +160,9 @@ Page({
     );
   },
 
-  onClickCell({ currentTarget }) {
-    const { type } = currentTarget.dataset;
-
+  onClickCell(e) {
+    const { type } = e.currentTarget.dataset;
+    
     // 检查登录状态
     if (!this.data.isLogin && type !== 'service') {
       // 显示登录提示
@@ -200,6 +209,16 @@ Page({
         wx.navigateTo({
           url: '/pages/coupon/index',
         });
+        break;
+      }
+      case 'contact': {
+        // 联系我们功能
+        this.showServicePopup();
+        break;
+      }
+      case 'logout': {
+        // 退出登录功能
+        this.showLogoutConfirm();
         break;
       }
       default: {
@@ -257,6 +276,59 @@ Page({
     }
   },
 
+  // 处理订单类型点击
+  onClickOrderType(e) {
+    const { type } = e.currentTarget.dataset;
+    
+    // 检查登录状态
+    if (!this.data.isLogin) {
+      // 显示登录提示
+      this.setData({
+        showLoginDialog: true
+      });
+      return;
+    }
+    
+    // 根据订单类型跳转到对应的订单列表页
+    let status = '0';
+    switch (type) {
+      case '1': // 待付款
+        status = '5';
+        break;
+      case '2': // 待发货
+        status = '10';
+        break;
+      case '3': // 待收货
+        status = '40';
+        break;
+      case '4': // 待评价
+        status = '50';
+        break;
+      default:
+        status = '0';
+    }
+    
+    wx.navigateTo({
+      url: `/pages/order/order-list/index?status=${status}`,
+    });
+  },
+  
+  // 处理全部订单点击
+  onClickAllOrder() {
+    // 检查登录状态
+    if (!this.data.isLogin) {
+      // 显示登录提示
+      this.setData({
+        showLoginDialog: true
+      });
+      return;
+    }
+    
+    wx.navigateTo({
+      url: '/pages/order/order-list/index?status=0',
+    });
+  },
+
   gotoUserEditPage() {
     // 检查登录状态
     if (!this.data.isLogin) {
@@ -274,148 +346,302 @@ Page({
 
   // 用户登录 - 直接在按钮点击事件中处理
   handleLogin() {
-    // 直接调用getUserProfile，必须由用户点击事件触发
-    wx.getUserProfile({
-      desc: '用于完善会员资料',
-      success: async (res) => {
-        const userInfoFromWx = res.userInfo;
-        wx.showLoading({
-          title: '登录中...',
-          mask: true
-        });
-        
-        try {
-          // 1. 登录获取code
-          const loginRes = await new Promise((resolve, reject) => {
-            wx.login({
-              success: (res) => resolve(res),
-              fail: (err) => reject(err)
-            });
-          });
-          
-          if (!loginRes.code) {
-            throw new Error('登录失败，未获取到code');
-          }
-          
-          // 2. 获取openid (实际项目中需调用云函数或后端接口获取)
-          const openid = await getOpenidByCode(loginRes.code);
-          
-          // 3. 查询用户是否已存在
-          let dbUser = null;
-          
-          // 如果使用模拟环境，直接使用本地存储
-          if (cloudbaseTemplateConfig.useMock) {
-            // 检查本地模拟用户存储
-            const mockUsers = wx.getStorageSync('mockUsers') || [];
-            dbUser = mockUsers.find(user => user.openid === openid);
-          } else {
-            // 真实环境调用接口
-            try {
-              dbUser = await getUserByOpenid(openid);
-            } catch (error) {
-              console.error('获取用户信息失败，将使用本地模拟:', error);
-              // 失败时不影响流程，dbUser为null继续走创建逻辑
-            }
-          }
-          
-          // 4. 不存在则创建用户
-          if (!dbUser) {
-            try {
-              dbUser = await createUser({
-                nickName: userInfoFromWx.nickName,
-                avatarUrl: userInfoFromWx.avatarUrl,
-                openid: openid,
-                gender: userInfoFromWx.gender
-              });
-              
-              console.log('创建用户成功，返回数据:', dbUser);
-              
-              if (!dbUser) {
-                throw new Error('创建用户返回结果为空');
-              }
-            } catch (error) {
-              console.error('创建用户失败，使用本地模拟用户:', error);
-              // 创建失败时使用本地模拟
-              dbUser = {
-                _id: 'mock_user_id_' + Date.now(),
-                nickname: userInfoFromWx.nickName,
-                avatar_url: userInfoFromWx.avatarUrl,
-                openid: openid,
-                gender: userInfoFromWx.gender
-              };
-              
-              // 持久化到本地
-              const mockUsers = wx.getStorageSync('mockUsers') || [];
-              mockUsers.push(dbUser);
-              wx.setStorageSync('mockUsers', mockUsers);
-            }
-          } else {
-            // 更新用户信息
-            try {
-              await updateUser(dbUser._id, {
-                nickName: userInfoFromWx.nickName,
-                avatarUrl: userInfoFromWx.avatarUrl,
-                gender: userInfoFromWx.gender
-              });
-            } catch (error) {
-              console.error('更新用户信息失败，但不影响登录流程:', error);
-            }
-          }
-          
-          // 5. 更新本地存储
-          const userInfo = {
-            _id: dbUser._id || dbUser.Id || dbUser.id || '',
-            nickName: userInfoFromWx.nickName,
-            avatarUrl: userInfoFromWx.avatarUrl,
-            gender: userInfoFromWx.gender,
-            openid: openid,
-            bgImage: dbUser.bg_image || '',
-            phone: dbUser.phone || ''
-          };
-          
-          console.log('即将保存到本地的用户信息:', userInfo);
-          
-          // 设置token
-          const mockToken = 'mock_token_' + Date.now();
-          wx.setStorageSync('token', mockToken);
-          wx.setStorageSync('userInfo', userInfo);
-          
-          wx.hideLoading();
-          this.setData({
-            isLogin: true,
-            showLoginDialog: false
-          });
-          
-          // 重新获取用户数据
-          this.fetchData();
-          
-          wx.showToast({
-            title: '登录成功',
-            icon: 'success'
-          });
-        } catch (error) {
-          wx.hideLoading();
-          console.error('登录失败:', error);
-          wx.showToast({
-            title: '登录失败: ' + (error.message || '未知错误'),
-            icon: 'none'
-          });
-        }
-      },
-      fail: (err) => {
-        console.error('获取用户信息失败:', err);
-        wx.showToast({
-          title: '获取用户信息失败',
-          icon: 'none'
-        });
+    // 直接显示用户信息填写弹窗
+    this.setData({
+      showLoginDialog: false,
+      showUserInfoDialog: true,
+      tempUserInfo: {
+        avatarUrl: '',
+        nickName: '微信用户'
       }
     });
   },
 
-  // 关闭登录对话框
+  // 完成登录流程
+  async completeLogin(dbUser, openid) {
+    try {
+      // 设置用户信息
+      const userInfo = {
+        _id: dbUser._id || dbUser.Id || dbUser.id || '',
+        nickName: dbUser.nickName || dbUser.nickname || '微信用户',
+        avatarUrl: dbUser.avatarUrl || dbUser.avatar_url || '',
+        gender: dbUser.gender || 0,
+        openid: openid,
+        bgImage: dbUser.bgImage || dbUser.bg_image || '',
+        phone: dbUser.phone || ''
+      };
+      
+      // 设置token
+      const mockToken = 'mock_token_' + Date.now();
+      wx.setStorageSync('token', mockToken);
+      wx.setStorageSync('userInfo', userInfo);
+      
+      // 更新页面状态
+      this.setData({
+        isLogin: true,
+        userInfo: userInfo,
+        showLoginDialog: false,
+        showUserInfoDialog: false
+      });
+      
+      // 刷新页面数据
+      await this.fetchData();
+      
+      // 获取优惠券数量
+      await this.getCouponCount();
+      
+      // // 获取订单数量
+      // await Promise.all([
+      //   this.getToPayOrderCount(),
+      //   this.getToSendOrderCount(),
+      //   this.getToReceiveOrderCount()
+      // ]);
+      
+      wx.showToast({
+        title: '登录成功',
+        icon: 'success'
+      });
+    } catch (error) {
+      console.error('登录完成后刷新数据失败:', error);
+      wx.showToast({
+        title: '数据刷新失败',
+        icon: 'none'
+      });
+    }
+  },
+
+  // 获取待付款订单数量
+  async getToPayOrderCount() {
+    try {
+      const count = await getToPayOrderCount();
+      this.setData({
+        'orderTagInfos[0].orderNum': count
+      });
+    } catch (error) {
+      console.error('获取待付款订单数量失败:', error);
+    }
+  },
+
+  // 获取待发货订单数量
+  async getToSendOrderCount() {
+    try {
+      const count = await getToSendOrderCount();
+      this.setData({
+        'orderTagInfos[1].orderNum': count
+      });
+    } catch (error) {
+      console.error('获取待发货订单数量失败:', error);
+    }
+  },
+
+  // 获取待收货订单数量
+  async getToReceiveOrderCount() {
+    try {
+      const count = await getToReceiveOrderCount();
+      this.setData({
+        'orderTagInfos[2].orderNum': count
+      });
+    } catch (error) {
+      console.error('获取待收货订单数量失败:', error);
+    }
+  },
+
+  // 处理用户选择头像
+  onChooseAvatar(e) {
+    const { avatarUrl } = e.detail;
+    this.setData({
+      'tempUserInfo.avatarUrl': avatarUrl
+    });
+  },
+
+  // 处理用户输入昵称
+  onInputNickname(e) {
+    this.setData({
+      'tempUserInfo.nickName': e.detail.value
+    });
+  },
+
+  // 提交用户信息
+  async submitUserInfo() {
+    wx.showLoading({
+      title: '登录中...',
+      mask: true
+    });
+    
+    try {
+      const { tempUserInfo } = this.data;
+      
+      // 验证信息
+      if (!tempUserInfo.avatarUrl) {
+        throw new Error('请选择头像');
+      }
+      if (!tempUserInfo.nickName.trim()) {
+        throw new Error('请输入昵称');
+      }
+
+      // 执行登录
+      wx.login({
+        success: async (res) => {
+          if (!res.code) {
+            throw new Error('登录失败，未获取到code');
+          }
+          
+          // 获取openid
+          const openid = await getOpenidByCode(res.code);
+          
+          // 创建或更新用户信息
+          let dbUser = null;
+          
+          try {
+            // 先尝试获取用户
+            dbUser = await getUserByOpenid(openid);
+            
+            if (dbUser) {
+              // 更新用户信息
+              await updateUser(dbUser._id, {
+                nickName: tempUserInfo.nickName,
+                avatarUrl: tempUserInfo.avatarUrl
+              });
+              dbUser.nickName = tempUserInfo.nickName;
+              dbUser.avatarUrl = tempUserInfo.avatarUrl;
+            } else {
+              // 创建新用户
+              dbUser = await createUser({
+                nickName: tempUserInfo.nickName,
+                avatarUrl: tempUserInfo.avatarUrl,
+                openid: openid
+              });
+            }
+            
+            // 完成登录
+            this.completeLogin(dbUser, openid);
+            
+          } catch (error) {
+            console.error('保存用户信息失败:', error);
+            throw error;
+          }
+        },
+        fail: (err) => {
+          console.error('微信登录失败:', err);
+          throw new Error('微信登录失败');
+        }
+      });
+      
+    } catch (error) {
+      wx.hideLoading();
+      wx.showToast({
+        title: error.message || '登录失败',
+        icon: 'none'
+      });
+    }
+  },
+
+  // 关闭用户信息弹窗
+  closeUserInfoDialog() {
+    this.setData({
+      showUserInfoDialog: false
+    });
+  },
+
+  /**
+   * 获取优惠券数量
+   */
+  getCouponCount() {
+    fetchUserCoupons(1).then(coupons => {
+      this.setData({
+        couponCount: coupons.length
+      });
+    }).catch(error => {
+      console.error('获取优惠券数量失败:', error);
+      this.setData({
+        couponCount: 0
+      });
+    });
+  },
+
+  // 显示联系我们弹窗
+  showServicePopup() {
+    const { customerServiceInfo } = this.data;
+    if (!customerServiceInfo || !customerServiceInfo.servicePhone) {
+      wx.showToast({
+        title: '客服信息未配置',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    wx.showActionSheet({
+      itemList: ['拨打客服电话'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          wx.makePhoneCall({
+            phoneNumber: customerServiceInfo.servicePhone,
+            fail: (err) => {
+              console.error('拨打电话失败', err);
+              wx.showToast({
+                title: '拨打电话失败',
+                icon: 'none'
+              });
+            }
+          });
+        }
+      }
+    });
+  },
+
+  // 显示退出登录确认框
+  showLogoutConfirm() {
+    wx.showModal({
+      title: '确认退出登录',
+      content: '退出后将清除登录信息，是否继续？',
+      confirmColor: '#FA4126',
+      success: (res) => {
+        if (res.confirm) {
+          this.logout();
+        }
+      }
+    });
+  },
+
+  // 执行退出登录操作
+  logout() {
+    // 清除本地存储的用户信息和登录凭证
+    wx.removeStorageSync('token');
+    wx.removeStorageSync('userInfo');
+    
+    // 重置页面状态
+    this.setData({
+      isLogin: false,
+      userInfo: {
+        avatarUrl: '',
+        nickName: '未登录',
+        phoneNumber: '',
+        gender: 0,
+      },
+      couponCount: 0
+    });
+    
+    // 刷新页面
+    this.fetchData();
+    
+    wx.showToast({
+      title: '已退出登录',
+      icon: 'success'
+    });
+  },
+
+  // 添加关闭登录弹窗的方法
   closeLoginDialog() {
     this.setData({
       showLoginDialog: false
+    });
+  },
+
+  // 点击遮罩层关闭弹窗
+  closeDialogByMask() {
+    this.setData({
+      showLoginDialog: false,
+      showUserInfoDialog: false
     });
   }
 });

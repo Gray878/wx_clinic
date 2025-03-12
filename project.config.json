@@ -46,7 +46,7 @@
     "useStaticServer": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.23.1",
+  "libVersion": "3.7.10",
   "appid": "wxf3faacee4f5fe423",
   "projectname": "粤心陪诊",
   "simulatorType": "wechat",

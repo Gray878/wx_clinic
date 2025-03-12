@@ -7,22 +7,38 @@ Page({
       nickName: '',
       _id: '',
       phone: '',
-      bgImage: ''
-    }
+      bgImage: '',
+      gender: 0 // 0: 未知, 1: 男, 2: 女
+    },
+    genderText: '未设置',
+    showGenderPicker: false,
+    genderOptions: ['男', '女', '未知']
   },
 
   onLoad() {
     // 获取本地存储的用户信息
     const userInfo = wx.getStorageSync('userInfo');
     if (userInfo) {
+      // 设置性别显示文本
+      let genderText = '未设置';
+      if (userInfo.gender === 1) {
+        genderText = '男';
+      } else if (userInfo.gender === 2) {
+        genderText = '女';
+      } else if (userInfo.gender === 0) {
+        genderText = '未知';
+      }
+      
       this.setData({
         userInfo: {
           avatarUrl: userInfo.avatarUrl,
           nickName: userInfo.nickName,
           _id: userInfo._id,
           phone: userInfo.phone || '',
-          bgImage: userInfo.bgImage || ''
-        }
+          bgImage: userInfo.bgImage || '',
+          gender: userInfo.gender || 0
+        },
+        genderText: genderText
       });
     }
   },
@@ -63,37 +79,11 @@ Page({
   },
 
   // 选择头像
-  async onChooseAvatar() {
-    try {
-      const res = await wx.chooseImage({
-        count: 1,
-        sizeType: ['compressed'],
-        sourceType: ['album', 'camera']
-      });
-
-      const tempFilePath = res.tempFilePaths[0];
-      
-      // 上传到云存储
-      const fileID = await this.uploadToCloud(tempFilePath, 'avatar');
-      
-      if (fileID) {
-        // 更新头像URL
-        this.setData({
-          'userInfo.avatarUrl': fileID
-        });
-        
-        wx.showToast({
-          title: '头像已更新',
-          icon: 'success'
-        });
-      }
-    } catch (error) {
-      console.error('选择头像失败:', error);
-      wx.showToast({
-        title: '选择头像失败',
-        icon: 'none'
-      });
-    }
+  async onChooseAvatar(e) {
+    const { avatarUrl } = e.detail;
+    this.setData({
+      'userInfo.avatarUrl': avatarUrl
+    });
   },
 
   // 选择背景图片
@@ -131,7 +121,7 @@ Page({
   },
 
   // 输入昵称
-  onInputNickName(e) {
+  onNicknameChange(e) {
     this.setData({
       'userInfo.nickName': e.detail.value
     });
@@ -150,48 +140,77 @@ Page({
     return phoneRegex.test(phone);
   },
 
+  // 点击性别选择区域
+  onTapGender() {
+    wx.showActionSheet({
+      itemList: this.data.genderOptions,
+      success: (res) => {
+        const index = res.tapIndex;
+        let gender = 0;
+        let genderText = '';
+        
+        // 根据选择设置性别值和文本
+        if (index === 0) { // 男
+          gender = 1;
+          genderText = '男';
+        } else if (index === 1) { // 女
+          gender = 2;
+          genderText = '女';
+        } else { // 不公开
+          gender = 0;
+          genderText = '不公开';
+        }
+        
+        this.setData({
+          'userInfo.gender': gender,
+          genderText: genderText
+        });
+      }
+    });
+  },
+
   // 保存信息
   async onSave() {
-    const { userInfo } = this.data;
-    
-    // 验证昵称
-    if (!userInfo.nickName || userInfo.nickName.trim() === '') {
-      wx.showToast({
-        title: '请输入昵称',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 验证手机号（如果有输入）
-    if (userInfo.phone && !this.validatePhone(userInfo.phone)) {
-      wx.showToast({
-        title: '请输入正确的手机号',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 显示加载提示
-    wx.showLoading({
-      title: '保存中...',
-      mask: true
-    });
-
     try {
+      // 验证数据
+      if (!this.data.userInfo.nickName.trim()) {
+        wx.showToast({
+          title: '昵称不能为空',
+          icon: 'none'
+        });
+        return;
+      }
+      
+      if (this.data.userInfo.phone && !this.validatePhone(this.data.userInfo.phone)) {
+        wx.showToast({
+          title: '手机号格式不正确',
+          icon: 'none'
+        });
+        return;
+      }
+      
+      wx.showLoading({
+        title: '保存中...',
+        mask: true
+      });
+      
+      // 准备要更新的数据
+      const updateData = {
+        nickName: this.data.userInfo.nickName,
+        avatarUrl: this.data.userInfo.avatarUrl,
+        phone: this.data.userInfo.phone,
+        bgImage: this.data.userInfo.bgImage,
+        gender: this.data.userInfo.gender
+      };
+
       // 保存到云数据库
-      const userId = userInfo._id;
+      const userId = this.data.userInfo._id;
       if (!userId) {
         throw new Error('用户ID不存在');
       }
 
       // 更新用户信息
-      const updateResult = await updateUser(userId, {
-        nickName: userInfo.nickName,
-        avatarUrl: userInfo.avatarUrl,
-        phone: userInfo.phone,
-        bgImage: userInfo.bgImage
-      });
+      const updateResult = await updateUser(userId, updateData);
 
       if (!updateResult) {
         throw new Error('更新用户信息失败');
@@ -202,10 +221,11 @@ Page({
       if (localUserInfo) {
         wx.setStorageSync('userInfo', {
           ...localUserInfo,
-          nickName: userInfo.nickName,
-          avatarUrl: userInfo.avatarUrl,
-          phone: userInfo.phone,
-          bgImage: userInfo.bgImage
+          nickName: this.data.userInfo.nickName,
+          avatarUrl: this.data.userInfo.avatarUrl,
+          phone: this.data.userInfo.phone,
+          bgImage: this.data.userInfo.bgImage,
+          gender: this.data.userInfo.gender
         });
       }
 
@@ -229,10 +249,11 @@ Page({
               prevPage.setData({
                 userInfo: {
                   ...prevPage.data.userInfo,
-                  avatarUrl: userInfo.avatarUrl,
-                  nickName: userInfo.nickName,
-                  phone: userInfo.phone,
-                  bgImage: userInfo.bgImage
+                  avatarUrl: this.data.userInfo.avatarUrl,
+                  nickName: this.data.userInfo.nickName,
+                  phone: this.data.userInfo.phone,
+                  bgImage: this.data.userInfo.bgImage,
+                  gender: this.data.userInfo.gender
                 }
               });
               // 触发上一页的onShow方法，刷新数据

@@ -445,3 +445,47 @@ export const ORDER_ITEM = [
 ];
 
 ORDER_ITEM.pop();
+
+export const COUPONS = [
+  {
+    _id: 'coupon_001',
+    name: '满100减10券',
+    type: 1,
+    amount: 10,
+    minConsume: 10000,
+    description: '全场通用优惠券',
+    startTime: Date.now(),
+    endTime: Date.now() + 30*24*60*60*1000,
+    status: 1
+  },
+  {
+    _id: 'coupon_002',
+    name: '9折优惠券',
+    type: 2,
+    amount: 0.9,
+    minConsume: 5000,
+    description: '全场通用折扣券',
+    startTime: Date.now(),
+    endTime: Date.now() + 15*24*60*60*1000,
+    status: 1
+  }
+];
+
+export const USER_COUPONS = [
+  {
+    _id: 'user_coupon_001',
+    user: USER_ID,
+    coupon: COUPONS[0],
+    status: 1,
+    receiveTime: Date.now() - 5*24*60*60*1000,
+    expireTime: Date.now() + 25*24*60*60*1000
+  },
+  {
+    _id: 'user_coupon_002',
+    user: USER_ID,
+    coupon: COUPONS[1],
+    status: 1,
+    receiveTime: Date.now() - 2*24*60*60*1000,
+    expireTime: Date.now() + 13*24*60*60*1000
+  }
+];

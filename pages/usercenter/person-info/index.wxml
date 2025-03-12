@@ -10,22 +10,16 @@
 
   <!-- 头像 -->
   <view class="avatar-section">
-    <view class="section-title">头像</view>
-    <view class="avatar-wrapper" bindtap="onChooseAvatar">
-      <image class="avatar" src="{{userInfo.avatarUrl || 'https://cdn-we-retail.ym.tencent.com/miniapp/usercenter/icon-user.png'}}" mode="aspectFill" />
-      <view class="edit-text">点击更换</view>
-    </view>
+    <text class="section-title">头像</text>
+    <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{userInfo.avatarUrl || 'https://cdn-we-retail.ym.tencent.com/miniapp/usercenter/icon-user.png'}}"></image>
+    </button>
   </view>
 
   <!-- 昵称 -->
   <view class="nickname-section">
-    <view class="section-title">昵称</view>
-    <input 
-      class="nickname-input" 
-      value="{{userInfo.nickName}}" 
-      placeholder="请输入昵称" 
-      bindinput="onInputNickName"
-    />
+    <text class="section-title">昵称</text>
+    <input type="nickname" class="nickname-input" placeholder="请输入昵称" value="{{userInfo.nickName}}" bindinput="onNicknameChange"/>
   </view>
 
   <!-- 手机号 -->
@@ -39,6 +33,15 @@
       type="number"
       maxlength="11"
     />
+  </view>
+
+  <!-- 性别 -->
+  <view class="gender-section">
+    <view class="section-title">性别</view>
+    <view class="gender-picker" bindtap="onTapGender">
+      <text class="gender-text">{{genderText}}</text>
+      <t-icon name="chevron-right" size="32rpx" color="#BBBBBB" />
+    </view>
   </view>
 
   <!-- 保存按钮 -->

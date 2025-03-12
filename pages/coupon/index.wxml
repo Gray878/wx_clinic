@@ -1,0 +1,108 @@
+<view class="coupon-page">
+  <!-- 标签导航栏 -->
+  <view class="tab-navbar">
+    <view 
+      class="tab-item {{currentTab === 1 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="1"
+    >
+      未使用 ({{tabList[0].count}})
+    </view>
+    <view 
+      class="tab-item {{currentTab === 2 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="2"
+    >
+      已使用 ({{tabList[1].count}})
+    </view>
+    <view 
+      class="tab-item {{currentTab === 3 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="3"
+    >
+      已失效 ({{tabList[2].count}})
+    </view>
+  </view>
+
+  <!-- 优惠券列表 -->
+  <view class="coupon-list-container">
+    <block wx:if="{{!loading && !isEmpty}}">
+      <view class="coupon-list">
+        <view 
+          class="coupon-item {{currentTab === 3 ? 'disabled' : ''}}" 
+          wx:for="{{couponList}}" 
+          wx:key="_id"
+          bindtap="{{currentTab === 1 ? 'onUseCoupon' : 'onViewCouponDetail'}}"
+          data-id="{{item._id}}"
+        >
+          <!-- 波浪边框 -->
+          <view class="coupon-divider"></view>
+          
+          <!-- 优惠券左侧 - 金额/折扣 -->
+          <view class="coupon-left">
+            <view class="coupon-amount">
+              <text class="unit" wx:if="{{item.coupon.type !== 2}}">¥</text>
+              <text class="number">{{item.coupon.type === 2 ? item.coupon.amount * 10 : item.coupon.amount}}</text>
+              <text class="unit" wx:if="{{item.coupon.type === 2}}">折</text>
+            </view>
+            <view class="coupon-condition" wx:if="{{item.coupon.minConsume > 0}}">
+              满{{item.coupon.minConsume}}元可用
+            </view>
+            <view class="coupon-condition" wx:else>
+              无门槛优惠券
+            </view>
+          </view>
+          
+          <!-- 优惠券右侧 - 名称/有效期 -->
+          <view class="coupon-right">
+            <view class="coupon-name">{{item.coupon.name || '优惠券'}}</view>
+            <view class="coupon-desc">{{item.coupon.description || '仅适用于指定商品'}}</view>
+            <view class="coupon-date">
+              {{currentTab === 1 ? '有效期至：' + formatDate(item.expireTime) : ''}}
+              {{currentTab === 2 ? '使用时间：' + formatDate(item.useTime) : ''}}
+              {{currentTab === 3 ? '已过期：' + formatDate(item.expireTime) : ''}}
+            </view>
+            <view class="coupon-btn" wx:if="{{currentTab === 1}}">
+              去使用
+            </view>
+          </view>
+          
+          <!-- 优惠券状态标签 -->
+          <view class="coupon-status" wx:if="{{currentTab === 2}}">
+            <image src="/assets/images/coupon/used.png" />
+          </view>
+          <view class="coupon-status" wx:if="{{currentTab === 3}}">
+            <image src="/assets/images/coupon/expired.png" />
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 加载中 -->
+    <t-loading
+      wx:if="{{loading}}"
+      theme="circular"
+      size="40rpx"
+      class="coupon-loading"
+    />
+    
+    <!-- 空状态 -->
+    <view class="coupon-empty" wx:if="{{!loading && isEmpty}}">
+      <image class="empty-img" src="https://cdn-we-retail.ym.tencent.com/miniapp/coupon/empty_coupon.png" />
+      <view class="empty-text">
+        暂无{{currentTab === 1 ? '未使用' : currentTab === 2 ? '已使用' : '已失效'}}优惠券
+      </view>
+    </view>
+  </view>
+  
+  <t-toast id="t-toast" />
+  
+  <!-- 辅助函数 -->
+  <wxs module="formatDate">
+    module.exports = function(timestamp) {
+      if (!timestamp) return '';
+      var date = getDate(timestamp);
+      return date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
+    }
+  </wxs>
+</view> 

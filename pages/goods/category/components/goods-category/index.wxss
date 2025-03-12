@@ -142,14 +142,6 @@
   align-self: flex-start;
 }
 
-/* 无子分类时的提示 */
-.no-child-cate-tip {
-  font-size: 28rpx;
-  color: #999;
-  padding: 20rpx 0;
-  margin-bottom: 16rpx;
-}
-
 /* 商品列表布局 */
 .goods-list {
   display: flex;
