@@ -106,6 +106,25 @@ Page({
   },
 
   onLoad() {
+    const app = getApp();
+    // 从本地存储获取登录状态
+    const token = wx.getStorageSync('token');
+    const userInfo = wx.getStorageSync('userInfo');
+    
+    // 更新页面登录状态
+    this.setData({
+      isLogin: !!token && !!userInfo,
+      userInfo: userInfo || {
+        avatarUrl: '',
+        nickName: '未登录',
+        phoneNumber: '',
+        gender: 0,
+      }
+    });
+
+    // 同步更新全局登录状态
+    app.globalData.isLoggedIn = this.data.isLogin;
+
     const tabBar = this.getTabBar();
     if (tabBar) {
       tabBar.init();
@@ -113,6 +132,19 @@ Page({
   },
 
   onShow() {
+    // 每次显示页面时检查登录状态
+    const app = getApp();
+    const isLoggedIn = app.globalData.isLoggedIn;
+    
+    if (isLoggedIn !== this.data.isLogin) {
+      this.setData({ isLogin: isLoggedIn });
+    }
+    
+    // 如果已登录，刷新数据
+    if (isLoggedIn) {
+      this.fetchData();
+    }
+
     this.init();
     this.getCouponCount();
   },
@@ -330,17 +362,32 @@ Page({
   },
 
   gotoUserEditPage() {
-    // 检查登录状态
-    if (!this.data.isLogin) {
-      // 显示登录提示
+    // 从全局获取登录状态
+    const app = getApp();
+    const isLoggedIn = app.globalData.isLoggedIn;
+    
+    // 从本地存储获取token和用户信息作为双重验证
+    const token = wx.getStorageSync('token');
+    const userInfo = wx.getStorageSync('userInfo');
+    
+    // 只有当全局状态和本地存储都表明已登录时，才认为是已登录状态
+    if (!isLoggedIn || !token || !userInfo) {
       this.setData({
         showLoginDialog: true
       });
       return;
     }
 
+    // 已登录则跳转到个人信息页
     wx.navigateTo({
       url: '/pages/usercenter/person-info/index',
+      fail: (err) => {
+        console.error('页面跳转失败:', err);
+        wx.showToast({
+          title: '页面跳转失败',
+          icon: 'none'
+        });
+      }
     });
   },
 
@@ -447,11 +494,50 @@ Page({
   },
 
   // 处理用户选择头像
-  onChooseAvatar(e) {
+  async onChooseAvatar(e) {
     const { avatarUrl } = e.detail;
+    
+    // 先显示临时头像
     this.setData({
       'tempUserInfo.avatarUrl': avatarUrl
     });
+    
+    try {
+      // 上传头像到云存储
+      wx.showLoading({
+        title: '上传头像中...',
+        mask: true
+      });
+      
+      // 生成云存储路径
+      const timestamp = Date.now();
+      const cloudPath = `avatars/${timestamp}${avatarUrl.match(/\.[^.]+?$/) ? avatarUrl.match(/\.[^.]+?$/)[0] : '.jpg'}`;
+      
+      // 上传文件
+      const res = await wx.cloud.uploadFile({
+        cloudPath,
+        filePath: avatarUrl
+      });
+      
+      wx.hideLoading();
+      
+      if (res.fileID) {
+        // 更新头像为云存储路径
+        this.setData({
+          'tempUserInfo.avatarUrl': res.fileID
+        });
+        console.log('头像上传成功:', res.fileID);
+      } else {
+        throw new Error('上传失败');
+      }
+    } catch (error) {
+      wx.hideLoading();
+      console.error('上传头像失败:', error);
+      wx.showToast({
+        title: '头像上传失败，请重试',
+        icon: 'none'
+      });
+    }
   },
 
   // 处理用户输入昵称
@@ -477,6 +563,28 @@ Page({
       }
       if (!tempUserInfo.nickName.trim()) {
         throw new Error('请输入昵称');
+      }
+
+      // 如果头像URL不是云存储路径（不是以cloud://开头），则再次上传
+      if (tempUserInfo.avatarUrl && !tempUserInfo.avatarUrl.startsWith('cloud://')) {
+        try {
+          // 生成云存储路径
+          const timestamp = Date.now();
+          const cloudPath = `avatars/${timestamp}${tempUserInfo.avatarUrl.match(/\.[^.]+?$/) ? tempUserInfo.avatarUrl.match(/\.[^.]+?$/)[0] : '.jpg'}`;
+          
+          // 上传文件
+          const res = await wx.cloud.uploadFile({
+            cloudPath,
+            filePath: tempUserInfo.avatarUrl
+          });
+          
+          if (res.fileID) {
+            tempUserInfo.avatarUrl = res.fileID;
+          }
+        } catch (error) {
+          console.error('上传头像失败:', error);
+          // 即使上传失败也继续登录流程，使用临时路径
+        }
       }
 
       // 执行登录

@@ -16,6 +16,9 @@ Page({
   },
 
   onLoad() {
+    wx.setNavigationBarTitle({
+      title: '个人信息'
+    });
     // 获取本地存储的用户信息
     const userInfo = wx.getStorageSync('userInfo');
     if (userInfo) {

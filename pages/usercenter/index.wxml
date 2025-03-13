@@ -110,7 +110,7 @@
 <block wx:if="{{showUserInfoDialog}}">
   <view class="userinfo-dialog-mask" bindtap="closeDialogByMask"></view>
   <view class="userinfo-dialog">
-    <view class="userinfo-dialog-title">完善个人信息</view>
+    <view class="userinfo-dialog-title">登录后体验更多功能</view>
     <view class="userinfo-dialog-content">
       <!-- 头像选择 -->
       <view class="avatar-section">
