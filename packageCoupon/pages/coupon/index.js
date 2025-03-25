@@ -1,5 +1,5 @@
 import Toast from 'tdesign-miniprogram/toast/index';
-import { fetchUserCoupons } from '../../services/coupon/coupon';
+import { fetchUserCoupons } from '../../../services/coupon/coupon';
 
 Page({
   data: {
@@ -111,7 +111,7 @@ Page({
   onViewCouponDetail(e) {
     const { id } = e.currentTarget.dataset;
     wx.navigateTo({
-      url: `/pages/coupon/coupon-detail/index?id=${id}`,
+      url: `/packageCoupon/pages/coupon/coupon-detail/index?id=${id}`,
     });
   }
 }); 

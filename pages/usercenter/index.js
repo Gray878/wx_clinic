@@ -207,7 +207,7 @@ Page({
     switch (type) {
       case 'address': {
         wx.navigateTo({
-          url: '/pages/usercenter/address/list/index',
+          url: '/packageUser/pages/address/list/index',
         });
         break;
       }
@@ -239,7 +239,7 @@ Page({
       }
       case 'coupon': {
         wx.navigateTo({
-          url: '/pages/coupon/index',
+          url: '/packageCoupon/pages/coupon/index',
         });
         break;
       }
@@ -251,6 +251,12 @@ Page({
       case 'logout': {
         // 退出登录功能
         this.showLogoutConfirm();
+        break;
+      }
+      case 'name-edit': {
+        wx.navigateTo({
+          url: '/packageUser/pages/name-edit/index',
+        });
         break;
       }
       default: {
@@ -380,7 +386,7 @@ Page({
 
     // 已登录则跳转到个人信息页
     wx.navigateTo({
-      url: '/pages/usercenter/person-info/index',
+      url: '/packageUser/pages/person-info/index',
       fail: (err) => {
         console.error('页面跳转失败:', err);
         wx.showToast({

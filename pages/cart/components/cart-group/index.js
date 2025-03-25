@@ -162,7 +162,7 @@ Component({
     },
 
     gotoCoupons() {
-      wx.navigateTo({ url: '/pages/coupon/coupon-list/index' });
+      wx.navigateTo({ url: '/packageCoupon/pages/coupon/coupon-list/index' });
     },
   },
 });

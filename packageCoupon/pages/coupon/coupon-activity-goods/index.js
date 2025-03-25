@@ -1,4 +1,4 @@
-import { fetchCouponDetail } from '../../../services/coupon/index';
+import { fetchCouponDetail } from '../../../../services/coupon/index';
 import Toast from 'tdesign-miniprogram/toast/index';
 
 Page({

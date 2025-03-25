@@ -3,7 +3,7 @@ import { createOrderItem } from '../../../services/order/orderItem';
 import { createOrder, ORDER_STATUS, updateOrderStatus } from '../../../services/order/order';
 import { getCartItem, deleteCartItem } from '../../../services/cart/cart';
 import { getSkuDetail, updateSku } from '../../../services/sku/sku';
-import { getAddressPromise } from '../../usercenter/address/list/util';
+import { getAddressPromise } from '../../../packageUser/pages/address/list/util';
 import { getSingleCloudImageTempUrl } from '../../../utils/cloudImageHandler';
 import { cartShouldFresh } from '../../../utils/cartFresh';
 import { pay } from '../../../services/pay/pay';

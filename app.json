@@ -2,9 +2,6 @@
   "pages": [
     "pages/home/home",
     "pages/usercenter/index",
-    "pages/usercenter/person-info/index",
-    "pages/usercenter/address/list/index",
-    "pages/usercenter/address/edit/index",
     "pages/goods/list/index",
     "pages/goods/details/index",
     "pages/goods/category/index",
@@ -22,18 +19,36 @@
     "pages/order/after-service-detail/index",
     "pages/goods/comments/create/index",
     "pages/goods/comments/create-list/index",
-    "pages/coupon/index",
-    "pages/coupon/coupon-list/index",
-    "pages/coupon/coupon-detail/index",
-    "pages/coupon/coupon-activity-goods/index",
-    "pages/promotion-detail/index",
     "pages/order/fill-tracking-no/index",
     "pages/order/delivery-detail/index",
     "pages/order/invoice/index",
-    "pages/usercenter/name-edit/index",
-    "pages/hospital/detail/index",
-    "pages/hospital/list/index",
-    "pages/webview/index"
+    "pages/hospital/detail/index"
+  ],
+  "subPackages": [
+    {
+      "root": "packagePromotion",
+      "pages": [
+        "pages/promotion-detail/index"
+      ]
+    },
+    {
+      "root": "packageUser",
+      "pages": [
+        "pages/person-info/index",
+        "pages/address/list/index",
+        "pages/address/edit/index",
+        "pages/name-edit/index"
+      ]
+    },
+    {
+      "root": "packageCoupon",
+      "pages": [
+        "pages/coupon/index",
+        "pages/coupon/coupon-list/index",
+        "pages/coupon/coupon-detail/index",
+        "pages/coupon/coupon-activity-goods/index"
+      ]
+    }
   ],
   "tabBar": {
     "custom": true,
