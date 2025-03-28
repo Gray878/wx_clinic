@@ -4,7 +4,7 @@ import { checkLogin } from './services/user/user';
 
 // 初始化云开发环境
 wx.cloud.init({
-  env: 'labmanage-9g4x9uti5b5c8a99', // 指定云开发环境 ID
+  env: 'rmcloud-2g7rc2iu57bf3bf2', // 指定云开发环境 ID
 });
 
 // 使用解构赋值优化代码

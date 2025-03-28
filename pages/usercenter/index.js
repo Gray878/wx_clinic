@@ -132,21 +132,31 @@ Page({
   },
 
   onShow() {
-    // 每次显示页面时检查登录状态
     const app = getApp();
-    const isLoggedIn = app.globalData.isLoggedIn;
+    // 从本地存储获取最新状态
+    const token = wx.getStorageSync('token');
+    const userInfo = wx.getStorageSync('userInfo');
+    const isLoggedIn = !!token && !!userInfo;
     
-    if (isLoggedIn !== this.data.isLogin) {
-      this.setData({ isLogin: isLoggedIn });
-    }
+    // 同步更新全局状态和页面状态
+    app.globalData.isLoggedIn = isLoggedIn;
+    this.setData({ 
+        isLogin: isLoggedIn,
+        userInfo: userInfo || {
+            avatarUrl: '',
+            nickName: '未登录',
+            phoneNumber: '',
+            gender: 0,
+        }
+    });
     
     // 如果已登录，刷新数据
     if (isLoggedIn) {
-      this.fetchData();
+        this.fetchData();
+        this.getCouponCount();
     }
 
     this.init();
-    this.getCouponCount();
   },
 
   onPullDownRefresh() {
@@ -368,32 +378,33 @@ Page({
   },
 
   gotoUserEditPage() {
-    // 从全局获取登录状态
-    const app = getApp();
-    const isLoggedIn = app.globalData.isLoggedIn;
-    
-    // 从本地存储获取token和用户信息作为双重验证
+    // 从本地存储获取最新状态
     const token = wx.getStorageSync('token');
     const userInfo = wx.getStorageSync('userInfo');
+    const isLoggedIn = !!token && !!userInfo;
     
-    // 只有当全局状态和本地存储都表明已登录时，才认为是已登录状态
-    if (!isLoggedIn || !token || !userInfo) {
-      this.setData({
-        showLoginDialog: true
-      });
-      return;
+    // 更新页面状态和全局状态
+    const app = getApp();
+    app.globalData.isLoggedIn = isLoggedIn;
+    this.setData({ isLogin: isLoggedIn });
+    
+    if (!isLoggedIn) {
+        this.setData({
+            showLoginDialog: true
+        });
+        return;
     }
 
     // 已登录则跳转到个人信息页
     wx.navigateTo({
-      url: '/packageUser/pages/person-info/index',
-      fail: (err) => {
-        console.error('页面跳转失败:', err);
-        wx.showToast({
-          title: '页面跳转失败',
-          icon: 'none'
-        });
-      }
+        url: '/packageUser/pages/person-info/index',
+        fail: (err) => {
+            console.error('页面跳转失败:', err);
+            wx.showToast({
+                title: '页面跳转失败',
+                icon: 'none'
+            });
+        }
     });
   },
 
@@ -429,7 +440,9 @@ Page({
       wx.setStorageSync('token', mockToken);
       wx.setStorageSync('userInfo', userInfo);
       
-      // 更新页面状态
+      // 同时更新全局状态和页面状态
+      const app = getApp();
+      app.globalData.isLoggedIn = true;
       this.setData({
         isLogin: true,
         userInfo: userInfo,
@@ -719,28 +732,30 @@ Page({
 
   // 执行退出登录操作
   logout() {
-    // 清除本地存储的用户信息和登录凭证
+    // 清除本地存储
     wx.removeStorageSync('token');
     wx.removeStorageSync('userInfo');
     
-    // 重置页面状态
+    // 同时更新全局状态和页面状态
+    const app = getApp();
+    app.globalData.isLoggedIn = false;
     this.setData({
-      isLogin: false,
-      userInfo: {
-        avatarUrl: '',
-        nickName: '未登录',
-        phoneNumber: '',
-        gender: 0,
-      },
-      couponCount: 0
+        isLogin: false,
+        userInfo: {
+            avatarUrl: '',
+            nickName: '未登录',
+            phoneNumber: '',
+            gender: 0,
+        },
+        couponCount: 0
     });
     
     // 刷新页面
     this.fetchData();
     
     wx.showToast({
-      title: '已退出登录',
-      icon: 'success'
+        title: '已退出登录',
+        icon: 'success'
     });
   },
 
