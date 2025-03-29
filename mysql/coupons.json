@@ -1,0 +1,277 @@
+{
+    "previewTableName": "coupons-preview",
+    "publishCacheStatus": "notready",
+    "subType": "database",
+    "schema": {
+        "x-primary-column": "_id",
+        "x-kind": "tcb",
+        "x-defaultMethods": [
+            "wedaCreate",
+            "wedaUpdate",
+            "wedaDelete",
+            "wedaGetItem",
+            "wedaGetRecords",
+            "wedaGetList",
+            "wedaBatchCreate",
+            "wedaBatchUpdate",
+            "wedaBatchDelete"
+        ],
+        "type": "object",
+        "x-relatedType": "exist",
+        "x-viewId": "view-6lp1v7fbbk",
+        "required": [],
+        "properties": {
+            "owner": {
+                "default": "",
+                "x-system": true,
+                "x-id": "66a20ec",
+                "name": "owner",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 4,
+                "title": "所有人",
+                "type": "string",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "amount": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "9f93b86c",
+                "format": "",
+                "description": "优惠金额/折扣率，例如10元或0.8(8折)",
+                "type": "number",
+                "x-index": 6,
+                "title": "优惠金额/折扣率",
+                "x-unique": false
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "152f0d0",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "description": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "8de9ae91",
+                "format": "",
+                "description": "使用说明，例如\"仅限医疗服务使用\"",
+                "type": "string",
+                "x-index": 18,
+                "title": "使用说明",
+                "x-unique": false,
+                "maxLength": 4000
+            },
+            "type": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "ee2fe2ab",
+                "format": "",
+                "description": "类型：1-满减券，2-折扣券，3-无门槛券",
+                "type": "number",
+                "x-index": 4,
+                "title": "类型",
+                "x-unique": false
+            },
+            "minConsume": {
+                "x-required": false,
+                "default": 0,
+                "x-keyPath": "",
+                "x-id": "15c5c55c",
+                "format": "",
+                "description": "最低消费金额，0表示无门槛",
+                "type": "number",
+                "x-index": 8,
+                "title": "最低消费金额",
+                "x-unique": false
+            },
+            "createdAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "76ceb26",
+                "format": "datetime",
+                "x-index": 2,
+                "type": "number",
+                "title": "创建时间",
+                "x-unique": false
+            },
+            "createBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "d11b2b5",
+                "name": "createBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 5,
+                "type": "string",
+                "title": "创建人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "updateBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "93a079a",
+                "name": "updateBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 6,
+                "type": "string",
+                "title": "修改人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "_openid": {
+                "default": "",
+                "x-system": true,
+                "x-id": "aa5f63d",
+                "name": "_openid",
+                "format": "",
+                "pattern": "",
+                "description": "仅微信云开发下使用",
+                "x-index": 45,
+                "title": "记录创建者",
+                "type": "string",
+                "x-unique": false
+            },
+            "name": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "8bcde113",
+                "format": "",
+                "description": "优惠券名称，例如\"满100减10\"",
+                "type": "string",
+                "x-index": 2,
+                "title": "名称",
+                "x-unique": false,
+                "maxLength": 4000
+            },
+            "startTime": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "c65336f4",
+                "format": "datetime",
+                "description": "",
+                "type": "number",
+                "x-index": 10,
+                "title": "开始时间",
+                "x-unique": false
+            },
+            "endTime": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "fd2da284",
+                "format": "datetime",
+                "description": "",
+                "type": "number",
+                "x-index": 12,
+                "title": "结束时间",
+                "x-unique": false
+            },
+            "_id": {
+                "default": "",
+                "x-system": true,
+                "x-id": "d9e2c8a",
+                "format": "",
+                "pattern": "",
+                "x-index": 1,
+                "type": "string",
+                "title": "数据标识",
+                "x-unique": true
+            },
+            "stock": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "923ed3d4",
+                "format": "",
+                "description": "库存数量，-1表示不限量",
+                "type": "number",
+                "x-index": 16,
+                "title": "库存数量",
+                "x-unique": false
+            },
+            "user_coupons": {
+                "name": "user_coupons",
+                "format": "one-many",
+                "deleteWay": "doNothing",
+                "title": "UserCoupons",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "name": "_id",
+                            "title": "数据标识",
+                            "type": "string"
+                        }
+                    }
+                },
+                "x-parent": {
+                    "parentFieldKey": "coupon",
+                    "parentFieldTitle": "优惠券",
+                    "parentDataSourceName": "user_coupons"
+                }
+            },
+            "status": {
+                "x-required": false,
+                "default": 1,
+                "x-keyPath": "",
+                "x-id": "9aa3ea79",
+                "format": "",
+                "name": "status",
+                "description": "状态：1-启用，0-停用",
+                "isEnum": false,
+                "type": "number",
+                "x-index": 14,
+                "title": "状态",
+                "x-unique": false
+            },
+            "updatedAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "95c5b23",
+                "format": "datetime",
+                "x-index": 3,
+                "title": "更新时间",
+                "type": "number",
+                "x-unique": false
+            }
+        }
+    },
+    "dbInstanceType": "MYSQL",
+    "title": "优惠券",
+    "name": "coupons",
+    "dbLinkType": "internal",
+    "tableNameRule": "only_name",
+    "type": "database",
+    "childDataSourceNames": null,
+    "updateTime": "2025-03-09T12:18:30",
+    "publishedTableName": "coupons",
+    "id": "data-4yrw93WpQ",
+    "dbSourceType": "internal_mysql",
+    "methods": [],
+    "fun": "{\"onlineVersion\": 6, \"previewVersion\": 5, \"onlinePublishAt\": 1741522710859, \"prviewPublishAt\": 1741522708923}",
+    "publishStatus": 1,
+    "configuration": {}
+}

@@ -1,0 +1,250 @@
+{
+    "previewTableName": "lcap-shop_spu_cate-preview",
+    "publishCacheStatus": "ready",
+    "subType": "database",
+    "schema": {
+        "x-primary-column": "name",
+        "x-kind": "tcb",
+        "x-defaultMethods": [
+            "wedaCreate",
+            "wedaUpdate",
+            "wedaDelete",
+            "wedaGetItem",
+            "wedaGetRecords",
+            "wedaGetList",
+            "wedaBatchCreate",
+            "wedaBatchUpdate",
+            "wedaBatchDelete"
+        ],
+        "type": "object",
+        "x-relatedType": "exist",
+        "title": "电商SPU分类",
+        "x-viewId": "view-6kjf82y7wg",
+        "required": [
+            "name"
+        ],
+        "properties": {
+            "owner": {
+                "default": "",
+                "x-system": true,
+                "x-id": "544a432",
+                "name": "owner",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 4,
+                "title": "所有人",
+                "type": "string",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "image": {
+                "x-image-size": 5242880,
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "4bfd99db",
+                "format": "x-image",
+                "description": "",
+                "type": "string",
+                "x-index": 47,
+                "title": "图片",
+                "x-unique": false,
+                "maxLength": 1024
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "61cd947",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "child_cate": {
+                "maxItems": 50,
+                "name": "child_cate",
+                "format": "many-many",
+                "deleteWay": "doNothing",
+                "title": "子分类",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "name": "_id",
+                            "title": "数据标识",
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "parent_cate",
+                    "parentFieldTitle": "父分类",
+                    "parentDataSourceName": "shop_spu_cate"
+                }
+            },
+            "createdAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "472cc80",
+                "format": "datetime",
+                "x-index": 2,
+                "type": "number",
+                "title": "创建时间",
+                "x-unique": false
+            },
+            "createBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "ae5d78e",
+                "name": "createBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 5,
+                "type": "string",
+                "title": "创建人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "updateBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "93a079a",
+                "name": "updateBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 6,
+                "type": "string",
+                "title": "修改人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "_openid": {
+                "default": "",
+                "x-system": true,
+                "x-id": "021fe37",
+                "name": "_openid",
+                "format": "",
+                "pattern": "",
+                "description": "仅微信云开发下使用",
+                "x-index": 45,
+                "title": "记录创建者",
+                "type": "string",
+                "x-unique": false
+            },
+            "name": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "c1c92da5",
+                "format": "",
+                "description": "",
+                "type": "string",
+                "x-index": 2,
+                "title": "名称",
+                "x-unique": false,
+                "maxLength": 4000
+            },
+            "spu": {
+                "maxItems": 50,
+                "name": "spu",
+                "format": "many-many",
+                "deleteWay": "doNothing",
+                "title": "SPU",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "name": "_id",
+                            "title": "数据标识",
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "cate",
+                    "parentFieldTitle": "分类",
+                    "parentDataSourceName": "shop_spu"
+                }
+            },
+            "_id": {
+                "default": "",
+                "x-system": true,
+                "x-id": "fb74aaa",
+                "format": "",
+                "pattern": "",
+                "x-index": 1,
+                "type": "string",
+                "title": "数据标识",
+                "x-unique": true
+            },
+            "updatedAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "8c24291",
+                "format": "datetime",
+                "x-index": 3,
+                "title": "更新时间",
+                "type": "number",
+                "x-unique": false
+            },
+            "parent_cate": {
+                "maxItems": 50,
+                "name": "parent_cate",
+                "format": "many-many",
+                "deleteWay": "doNothing",
+                "title": "父分类",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "name": "_id",
+                            "title": "数据标识",
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "child_cate",
+                    "parentFieldTitle": "子分类",
+                    "parentDataSourceName": "shop_spu_cate"
+                }
+            }
+        }
+    },
+    "dbInstanceType": "MYSQL",
+    "title": "服务SPU分类",
+    "name": "shop_spu_cate",
+    "dbLinkType": "internal",
+    "tableNameRule": "has_lcap",
+    "type": "database",
+    "childDataSourceNames": null,
+    "updateTime": "2025-02-28T12:59:05",
+    "publishedTableName": "lcap-shop_spu_cate",
+    "id": "data-4x8b7wv38",
+    "dbSourceType": "internal_mysql",
+    "methods": [],
+    "fun": "{\"onlineVersion\": 6, \"previewVersion\": 5, \"onlinePublishAt\": 1740747545664, \"prviewPublishAt\": 1740747544752}",
+    "publishStatus": 1,
+    "configuration": {}
+}

@@ -188,7 +188,6 @@
   font-size: 28rpx;
   color: #999;
 }
-
 /* 标签导航栏 */
 .tab-navbar {
   display: flex;
@@ -225,4 +224,21 @@
   height: 4rpx;
   background-color: #07c160;  /* 微信绿色 */
   border-radius: 2rpx;
+}
+
+/* 选择模式下的优惠券样式 */
+.selectable {
+  position: relative;
+}
+
+.coupon-select-icon {
+  position: absolute;
+  right: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* 高亮选择模式下的可点击优惠券 */
+.selectable:active {
+  background-color: #f9f9f9;
 }

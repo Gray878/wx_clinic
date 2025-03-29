@@ -5,7 +5,7 @@ import { OrderStatus } from '../config';
 import { getAllOrderItemsOfAnOrder } from '../../../services/order/orderItem';
 import { getOrder, orderStatusToName, ORDER_STATUS, updateOrderDeliveryInfo } from '../../../services/order/order';
 import { fetchBusinessTime } from '../../../services/order/orderDetail';
-import { getAddressPromise } from '../../../packageUser/pages/address/list/util';
+import { getAddressPromise } from '../../usercenter/address/list/util';
 import { OPERATION_TYPE } from '../../../utils/orderOperation';
 
 Page({

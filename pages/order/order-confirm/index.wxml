@@ -20,7 +20,12 @@
     </view>
   </view>
   <view class="amount-wrapper">
-    <view class="pay-amount">
+    <view class="pay-amount" wx:if="{{selectedCoupon}}">
+      <text class="order-num">共{{goodsList.length}}件</text>
+      <text>实付</text>
+      <price class="total-price" price="{{totalPayAmount * 100}}" fill="{{false}}" decimalSmaller />
+    </view>
+    <view class="pay-amount" wx:else>
       <text class="order-num">共{{goodsList.length}}件</text>
       <text>小计</text>
       <price class="total-price" price="{{totalSalePrice * 100}}" fill="{{false}}" decimalSmaller />
@@ -28,10 +33,55 @@
   </view>
   <view class="wx-pay-cover">
     <view class="wx-pay">
-      <price decimalSmaller fill class="price" price="{{totalSalePrice * 100}}" />
+      <price decimalSmaller fill class="price" price="{{(selectedCoupon ? totalPayAmount : totalSalePrice) * 100}}" />
       <view class="submit-btn {{ userAddress != null ? '' : 'btn-gray'}}" bindtap="submitOrder">
         提交订单
       </view>
+    </view>
+  </view>
+  <view class="coupon-cell-group">
+    <t-cell-group>
+      <t-cell
+        title="优惠券"
+        arrow
+        note="{{selectedCoupon ? '已选1张优惠券' : '选择优惠券'}}"
+        bordered="{{false}}"
+        bind:click="onSelectCoupon"
+        t-class="coupon-cell"
+        t-class-note="{{selectedCoupon ? 'selected-coupon-note' : 'coupon-note'}}"
+      >
+        <view slot="left-icon" class="coupon-icon-wrapper">
+          <t-icon prefix="wr" name="coupon" size="48rpx" color="#FF4141" />
+        </view>
+      </t-cell>
+    </t-cell-group>
+    
+    <view class="selected-coupon-info" wx:if="{{selectedCoupon}}">
+      <view class="coupon-info-wrapper">
+        <view class="coupon-left">
+          <view class="coupon-amount">
+            <text class="unit" wx:if="{{selectedCoupon.coupon.type !== 2}}">¥</text>
+            <text class="number">{{selectedCoupon.coupon.type === 2 ? selectedCoupon.coupon.amount * 10 : selectedCoupon.coupon.amount}}</text>
+            <text class="unit" wx:if="{{selectedCoupon.coupon.type === 2}}">折</text>
+          </view>
+          <view class="coupon-condition" wx:if="{{selectedCoupon.coupon.minConsume > 0}}">
+            满{{selectedCoupon.coupon.minConsume}}元可用
+          </view>
+        </view>
+        <view class="coupon-right">
+          <view class="coupon-name">{{selectedCoupon.coupon.name || '优惠券'}}</view>
+          <view class="coupon-desc">{{selectedCoupon.coupon.description || ''}}</view>
+        </view>
+        <view class="remove-coupon" catch:tap="removeCoupon">
+          <t-icon name="close" size="40rpx" color="#999" />
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="order-price-section">
+    <view class="price-row" wx:if="{{selectedCoupon}}">
+      <text>优惠券折扣</text>
+      <text class="discount-price">-¥{{couponDiscountAmount}}</text>
     </view>
   </view>
 </view>

@@ -1,0 +1,291 @@
+{
+    "previewTableName": "lcap-shop_sku-preview",
+    "publishCacheStatus": "ready",
+    "subType": "database",
+    "schema": {
+        "x-primary-column": "description",
+        "x-kind": "tcb",
+        "x-defaultMethods": [
+            "wedaCreate",
+            "wedaUpdate",
+            "wedaDelete",
+            "wedaGetItem",
+            "wedaGetRecords",
+            "wedaGetList",
+            "wedaBatchCreate",
+            "wedaBatchUpdate",
+            "wedaBatchDelete"
+        ],
+        "type": "object",
+        "x-relatedType": "exist",
+        "title": "电商SKU",
+        "x-viewId": "view-6kjf82if0g",
+        "required": [
+            "count",
+            "price"
+        ],
+        "properties": {
+            "owner": {
+                "default": "",
+                "x-system": true,
+                "x-id": "656bf65",
+                "name": "owner",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 4,
+                "title": "所有人",
+                "type": "string",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "image": {
+                "x-image-size": 5242880,
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "87444b3e",
+                "format": "x-image",
+                "description": "",
+                "type": "string",
+                "x-index": 8,
+                "title": "图片",
+                "x-unique": false,
+                "maxLength": 1024
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "a27e71a",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "count": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "b4438d81",
+                "format": "",
+                "description": "",
+                "type": "number",
+                "x-index": 2,
+                "title": "库存",
+                "x-unique": false
+            },
+            "description": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "4e6f762c",
+                "format": "",
+                "description": "",
+                "type": "string",
+                "x-index": 48,
+                "title": "描述",
+                "x-unique": false,
+                "maxLength": 4000
+            },
+            "attr_value": {
+                "maxItems": 50,
+                "name": "attr_value",
+                "format": "many-many",
+                "deleteWay": "doNothing",
+                "title": "属性值",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "name": "_id",
+                            "title": "数据标识",
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "sku",
+                    "parentFieldTitle": "SKU",
+                    "parentDataSourceName": "shop_attr_value"
+                }
+            },
+            "createdAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "4e0e9c6",
+                "format": "datetime",
+                "x-index": 2,
+                "type": "number",
+                "title": "创建时间",
+                "x-unique": false
+            },
+            "createBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "186bd94",
+                "name": "createBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 5,
+                "type": "string",
+                "title": "创建人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "updateBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "93a079a",
+                "name": "updateBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 6,
+                "type": "string",
+                "title": "修改人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "order_item": {
+                "name": "order_item",
+                "format": "one-many",
+                "deleteWay": "doNothing",
+                "title": "订单项",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "name": "_id",
+                            "title": "数据标识",
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "sku",
+                    "parentFieldTitle": "SKU",
+                    "parentDataSourceName": "shop_order_item"
+                }
+            },
+            "price": {
+                "x-required": true,
+                "x-keyPath": "",
+                "x-id": "5f8346fa",
+                "format": "",
+                "description": "",
+                "type": "number",
+                "x-index": 4,
+                "title": "金额",
+                "x-unique": false
+            },
+            "_openid": {
+                "default": "",
+                "x-system": true,
+                "x-id": "f51b861",
+                "name": "_openid",
+                "format": "",
+                "pattern": "",
+                "description": "仅微信云开发下使用",
+                "x-index": 45,
+                "title": "记录创建者",
+                "type": "string",
+                "x-unique": false
+            },
+            "spu": {
+                "format": "many-one",
+                "name": "spu",
+                "deleteWay": "doNothing",
+                "type": "object",
+                "title": "SPU",
+                "required": [],
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                },
+                "x-parent": {
+                    "parentFieldKey": "sku",
+                    "parentFieldTitle": "SKU",
+                    "parentDataSourceName": "shop_spu"
+                }
+            },
+            "_id": {
+                "default": "",
+                "x-system": true,
+                "x-id": "38af667",
+                "format": "",
+                "pattern": "",
+                "x-index": 1,
+                "type": "string",
+                "title": "数据标识",
+                "x-unique": true
+            },
+            "updatedAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "78e09d5",
+                "format": "datetime",
+                "x-index": 3,
+                "title": "更新时间",
+                "type": "number",
+                "x-unique": false
+            },
+            "cart_item": {
+                "name": "cart_item",
+                "format": "one-many",
+                "deleteWay": "doNothing",
+                "title": "购物车项",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "name": "_id",
+                            "title": "数据标识",
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "sku",
+                    "parentFieldTitle": "SKU",
+                    "parentDataSourceName": "shop_cart_item"
+                }
+            }
+        }
+    },
+    "dbInstanceType": "MYSQL",
+    "title": "服务SKU",
+    "name": "shop_sku",
+    "dbLinkType": "internal",
+    "tableNameRule": "has_lcap",
+    "type": "database",
+    "childDataSourceNames": null,
+    "updateTime": "2025-02-28T14:05:45",
+    "publishedTableName": "lcap-shop_sku",
+    "id": "data-4x8b7svHp",
+    "dbSourceType": "internal_mysql",
+    "methods": [],
+    "fun": "{\"onlineVersion\": 8, \"previewVersion\": 7, \"onlinePublishAt\": 1740751545666, \"prviewPublishAt\": 1740751545172}",
+    "publishStatus": 1,
+    "configuration": {}
+}

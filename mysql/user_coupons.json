@@ -1,0 +1,302 @@
+{
+    "previewTableName": "user_coupons-preview",
+    "publishCacheStatus": "notready",
+    "subType": "database",
+    "schema": {
+        "x-primary-column": "_id",
+        "x-kind": "tcb",
+        "x-defaultMethods": [
+            "wedaCreate",
+            "wedaUpdate",
+            "wedaDelete",
+            "wedaGetItem",
+            "wedaGetRecords",
+            "wedaGetList",
+            "wedaBatchCreate",
+            "wedaBatchUpdate",
+            "wedaBatchDelete"
+        ],
+        "type": "object",
+        "x-relatedType": "exist",
+        "x-viewId": "view-6lp63p9b9s",
+        "required": [],
+        "properties": {
+            "owner": {
+                "default": "",
+                "x-system": true,
+                "x-id": "a8954f3",
+                "name": "owner",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 4,
+                "title": "所有人",
+                "type": "string",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "coupon": {
+                "x-keyPath": "",
+                "x-id": "7592a3ba",
+                "format": "many-one",
+                "description": "",
+                "isEnum": false,
+                "type": "object",
+                "x-index": 4,
+                "title": "优惠券",
+                "list": [
+                    {
+                        "x-id": "hy4x5ifj",
+                        "name": "_id",
+                        "pId": "7592a3ba",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                ],
+                "x-unique": false,
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "user_coupons",
+                    "parentFieldTitle": "UserCoupons",
+                    "parentDataSourceName": "coupons"
+                },
+                "x-required": false,
+                "name": "coupon",
+                "deleteWay": "doNothing",
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                }
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "3f1eac3",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "receiveTime": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "a3992df5",
+                "format": "datetime",
+                "description": "",
+                "type": "number",
+                "x-index": 8,
+                "title": "领取时间",
+                "x-unique": false
+            },
+            "createdAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "6bde7de",
+                "format": "datetime",
+                "x-index": 2,
+                "type": "number",
+                "title": "创建时间",
+                "x-unique": false
+            },
+            "createBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "61be881",
+                "name": "createBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 5,
+                "type": "string",
+                "title": "创建人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "expireTime": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "38ee3de3",
+                "format": "datetime",
+                "description": "",
+                "type": "number",
+                "x-index": 12,
+                "title": "过期时间",
+                "x-unique": false
+            },
+            "updateBy": {
+                "default": "",
+                "x-system": true,
+                "x-id": "93a079a",
+                "name": "updateBy",
+                "format": "father-son",
+                "pattern": "",
+                "x-index": 6,
+                "type": "string",
+                "title": "修改人",
+                "x-unique": false,
+                "x-parent": {
+                    "fatherAction": "judge",
+                    "type": "father-son",
+                    "parentDataSourceName": "sys_user"
+                }
+            },
+            "order_item": {
+                "x-keyPath": "",
+                "x-id": "9e14ad14",
+                "format": "many-one",
+                "description": "",
+                "type": "object",
+                "x-index": 14,
+                "title": "使用的订单",
+                "list": [
+                    {
+                        "x-id": "9ryhbwfu",
+                        "name": "_id",
+                        "pId": "9e14ad14",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                ],
+                "x-unique": false,
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "user_coupons",
+                    "parentFieldTitle": "UserCoupons",
+                    "parentDataSourceName": "shop_order_item"
+                },
+                "x-required": false,
+                "name": "order_item",
+                "deleteWay": "doNothing",
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                }
+            },
+            "_openid": {
+                "default": "",
+                "x-system": true,
+                "x-id": "cb168f5",
+                "name": "_openid",
+                "format": "",
+                "pattern": "",
+                "description": "仅微信云开发下使用",
+                "x-index": 45,
+                "title": "记录创建者",
+                "type": "string",
+                "x-unique": false
+            },
+            "useTime": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "9df99a12",
+                "format": "datetime",
+                "description": "",
+                "type": "number",
+                "x-index": 10,
+                "title": "使用时间",
+                "x-unique": false
+            },
+            "_id": {
+                "default": "",
+                "x-system": true,
+                "x-id": "ee8f9e0",
+                "format": "",
+                "pattern": "",
+                "x-index": 1,
+                "type": "string",
+                "title": "数据标识",
+                "x-unique": true
+            },
+            "user": {
+                "x-keyPath": "",
+                "x-id": "bb76e8ac",
+                "format": "many-one",
+                "description": "",
+                "isEnum": false,
+                "type": "object",
+                "x-index": 2,
+                "title": "用户",
+                "list": [
+                    {
+                        "x-id": "6um1isid",
+                        "name": "_id",
+                        "pId": "bb76e8ac",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                ],
+                "x-unique": false,
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "user_coupons",
+                    "parentFieldTitle": "UserCoupons",
+                    "parentDataSourceName": "shop_user"
+                },
+                "x-required": false,
+                "name": "user",
+                "deleteWay": "doNothing",
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                }
+            },
+            "status": {
+                "x-required": false,
+                "default": 1,
+                "x-keyPath": "",
+                "x-id": "595da78a",
+                "format": "",
+                "description": "状态：1-未使用，2-已使用，3-已过期",
+                "type": "number",
+                "x-index": 6,
+                "title": "状态",
+                "x-unique": false
+            },
+            "updatedAt": {
+                "default": 0,
+                "x-system": true,
+                "x-id": "79922cb",
+                "format": "datetime",
+                "x-index": 3,
+                "title": "更新时间",
+                "type": "number",
+                "x-unique": false
+            }
+        }
+    },
+    "dbInstanceType": "MYSQL",
+    "title": "用户优惠券记录",
+    "name": "user_coupons",
+    "dbLinkType": "internal",
+    "tableNameRule": "only_name",
+    "type": "database",
+    "childDataSourceNames": null,
+    "updateTime": "2025-03-09T12:18:31",
+    "publishedTableName": "user_coupons",
+    "id": "data-4yrK31nKJ",
+    "dbSourceType": "internal_mysql",
+    "methods": [],
+    "fun": "{\"onlineVersion\": 5, \"previewVersion\": 4, \"onlinePublishAt\": 1741522711346, \"prviewPublishAt\": 1741522708929}",
+    "publishStatus": 1,
+    "configuration": {}
+}

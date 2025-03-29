@@ -8,6 +8,7 @@
     "pages/goods/search/index",
     "pages/goods/result/index",
     "pages/cart/index",
+    "pages/hospital/detail/index",
     "pages/order/order-confirm/index",
     "pages/order/receipt/index",
     "pages/order/pay-result/index",
@@ -22,7 +23,8 @@
     "pages/order/fill-tracking-no/index",
     "pages/order/delivery-detail/index",
     "pages/order/invoice/index",
-    "pages/hospital/detail/index"
+    "pages/usercenter/address/list/index",
+    "pages/usercenter/address/edit/index"
   ],
   "subPackages": [
     {
@@ -35,8 +37,6 @@
       "root": "packageUser",
       "pages": [
         "pages/person-info/index",
-        "pages/address/list/index",
-        "pages/address/edit/index",
         "pages/name-edit/index"
       ]
     },

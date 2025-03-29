@@ -29,10 +29,10 @@
     <block wx:if="{{!loading && !isEmpty}}">
       <view class="coupon-list">
         <view 
-          class="coupon-item {{currentTab === 3 ? 'disabled' : ''}}" 
+          class="coupon-item {{currentTab === 3 ? 'disabled' : ''}} {{selectMode && currentTab === 1 ? 'selectable' : ''}}" 
           wx:for="{{couponList}}" 
           wx:key="_id"
-          bindtap="{{currentTab === 1 ? 'onUseCoupon' : 'onViewCouponDetail'}}"
+          bindtap="{{selectMode && currentTab === 1 ? 'selectCoupon' : ''}}"
           data-id="{{item._id}}"
         >
           <!-- 波浪边框 -->
@@ -58,12 +58,9 @@
             <view class="coupon-name">{{item.coupon.name || '优惠券'}}</view>
             <view class="coupon-desc">{{item.coupon.description || '仅适用于指定商品'}}</view>
             <view class="coupon-date">
-              {{currentTab === 1 ? '有效期至：' + formatDate(item.expireTime) : ''}}
-              {{currentTab === 2 ? '使用时间：' + formatDate(item.useTime) : ''}}
-              {{currentTab === 3 ? '已过期：' + formatDate(item.expireTime) : ''}}
-            </view>
-            <view class="coupon-btn" wx:if="{{currentTab === 1}}">
-              去使用
+              {{currentTab === 1 ? '有效期至：' + (item.coupon.endTimeFormatted || '未知日期') : ''}}
+              {{currentTab === 2 ? '使用时间：' + (item.useTimeFormatted || '未知日期') : ''}}
+              {{currentTab === 3 ? '已过期：' + (item.coupon.endTimeFormatted || '未知日期') : ''}}
             </view>
           </view>
           
@@ -73,6 +70,11 @@
           </view>
           <view class="coupon-status" wx:if="{{currentTab === 3}}">
             <image src="/assets/images/coupon/expired.png" />
+          </view>
+
+          <!-- 选择模式下的选择标记(只在未使用的优惠券上显示) -->
+          <view class="coupon-select-icon" wx:if="{{selectMode && currentTab === 1}}">
+            <t-icon name="chevron-right" size="48rpx" color="#CCCCCC" />
           </view>
         </view>
       </view>
@@ -96,13 +98,4 @@
   </view>
   
   <t-toast id="t-toast" />
-  
-  <!-- 辅助函数 -->
-  <wxs module="formatDate">
-    module.exports = function(timestamp) {
-      if (!timestamp) return '';
-      var date = getDate(timestamp);
-      return date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
-    }
-  </wxs>
 </view> 

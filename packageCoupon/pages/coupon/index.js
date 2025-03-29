@@ -1,5 +1,6 @@
 import Toast from 'tdesign-miniprogram/toast/index';
 import { fetchUserCoupons } from '../../../services/coupon/coupon';
+import { resolveCoupon, rejectCoupon } from '../../../pages/coupon/util';
 
 Page({
   data: {
@@ -12,19 +13,40 @@ Page({
     couponList: [],
     loading: false,
     isEmpty: false,
+    selectMode: false, // 是否为选择模式
   },
 
-  onLoad() {
+  /**
+   * 如果是 true 的话，点击后会选中并返回上一页；否则点击无反应
+   */
+  selectMode: false,
+  /** 是否已经选择优惠券，不置为 true 的话页面离开时会触发取消选择行为 */
+  hasSelect: false,
+
+  onLoad(query) {
     // 设置导航栏标题
     wx.setNavigationBarTitle({
       title: '我的优惠券'
     });
+    
+    // 判断是否为选择模式
+    const { selectMode } = query;
+    this.selectMode = selectMode === 'true';
+    this.setData({ selectMode: this.selectMode });
+    
     this.fetchCouponList();
   },
 
   onShow() {
     // 每次显示页面时刷新数据
     this.fetchCouponList();
+  },
+  
+  onUnload() {
+    // 如果是选择模式且用户没有选择，触发取消选择
+    if (this.selectMode && !this.hasSelect) {
+      rejectCoupon();
+    }
   },
 
   onPullDownRefresh() {
@@ -65,7 +87,6 @@ Page({
       // 获取所有状态的优惠券数量
       const promises = [1, 2, 3].map(status => fetchUserCoupons(status));
       const results = await Promise.all(promises);
-      
       // 更新标签页计数
       const tabList = this.data.tabList.map((tab, index) => ({
         ...tab,
@@ -74,6 +95,18 @@ Page({
       
       // 获取当前选项卡的优惠券列表
       const list = results[this.data.currentTab - 1];
+      
+      // 预处理时间格式
+      list.forEach(item => {
+        if (item.coupon && item.coupon.endTime) {
+          const date = new Date(item.coupon.endTime);
+          item.coupon.endTimeFormatted = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+        }
+        if (item.useTime) {
+          const date = new Date(item.useTime);
+          item.useTimeFormatted = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+        }
+      });
       
       this.setData({
         tabList,
@@ -99,19 +132,21 @@ Page({
     }
   },
   
-  // 使用优惠券（跳转到商品列表）
-  onUseCoupon(e) {
+  // 选择优惠券
+  selectCoupon(e) {
+    // 只有在选择模式下才进行选择操作
+    if (!this.selectMode) return;
+    
     const { id } = e.currentTarget.dataset;
-    wx.navigateTo({
-      url: `/pages/goods/list/index?couponId=${id}`,
-    });
-  },
-  
-  // 查看优惠券详情
-  onViewCouponDetail(e) {
-    const { id } = e.currentTarget.dataset;
-    wx.navigateTo({
-      url: `/packageCoupon/pages/coupon/coupon-detail/index?id=${id}`,
-    });
+    const selectedCoupon = this.data.couponList.find(item => item._id === id);
+    
+    if (selectedCoupon) {
+      // 设置已选择标记
+      this.hasSelect = true;
+      // 将选中的优惠券传回上一页
+      resolveCoupon(selectedCoupon);
+      // 返回上一页
+      wx.navigateBack({ delta: 1 });
+    }
   }
 }); 

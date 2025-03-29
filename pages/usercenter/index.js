@@ -217,7 +217,7 @@ Page({
     switch (type) {
       case 'address': {
         wx.navigateTo({
-          url: '/packageUser/pages/address/list/index',
+          url: '/pages/usercenter/address/list/index',
         });
         break;
       }

@@ -219,3 +219,123 @@
   font-weight: bold;
   padding-left: 8rpx;
 }
+
+/* 优惠券相关样式 */
+.coupon-cell-group {
+  margin-top: 20rpx;
+  background-color: #fff;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.coupon-icon-wrapper {
+  margin-right: 16rpx;
+}
+
+.coupon-cell {
+  padding: 24rpx 32rpx !important;
+}
+
+.coupon-note {
+  color: #999 !important;
+  font-size: 28rpx !important;
+}
+
+.selected-coupon-note {
+  color: #FF4141 !important;
+  font-size: 28rpx !important;
+  font-weight: bold;
+}
+
+.selected-coupon-info {
+  padding: 0 32rpx 24rpx;
+  background-color: #fff;
+}
+
+.coupon-info-wrapper {
+  display: flex;
+  position: relative;
+  background-color: #FFF0F0;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-top: -10rpx;
+}
+
+.coupon-left {
+  width: 180rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px dashed #FFCCC7;
+  padding-right: 16rpx;
+}
+
+.coupon-amount {
+  display: flex;
+  align-items: baseline;
+}
+
+.coupon-amount .number {
+  font-size: 48rpx;
+  color: #FF4141;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.coupon-amount .unit {
+  font-size: 24rpx;
+  color: #FF4141;
+}
+
+.coupon-condition {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.coupon-right {
+  flex: 1;
+  padding: 0 24rpx;
+}
+
+.coupon-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.coupon-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.remove-coupon {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.discount-price {
+  color: #FF4141;
+}
+
+/* 确保订单金额汇总样式一致 */
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12rpx 32rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.price-row:last-child {
+  padding-bottom: 24rpx;
+}
