@@ -8,6 +8,7 @@ import { getSingleCloudImageTempUrl } from '../../../utils/cloudImageHandler';
 import { cartShouldFresh } from '../../../utils/cartFresh';
 import { pay } from '../../../services/pay/pay';
 import { createCouponPromise } from '../../coupon/util';
+import { updateUserCoupon } from '../../../services/coupon/coupon';
 
 const stripeImg = `https://cdn-we-retail.ym.tencent.com/miniapp/order/stripe.png`;
 
@@ -82,6 +83,7 @@ Page({
     directSku: null,
     selectedCoupon: null,
     couponDiscountAmount: 0, // 优惠券折扣金额
+    totalPayAmount: 0, // 优惠后支付金额
   },
 
   payLock: false,
@@ -206,8 +208,34 @@ Page({
 
   async payImpl(totalPrice, orderId) {
     try {
-      await pay({ id: orderId, totalPrice });
+      console.log('支付金额:', totalPrice, '订单ID:', orderId);
+      
+      console.log('准备支付,金额为：', totalPrice);
+      // 调用支付接口
+      await pay({ 
+        id: orderId, 
+        totalPrice // 确保使用正确的金额
+      });
+      console.log('支付成功,金额为：', totalPrice);
+      
       try {
+        // 如果有使用优惠券，更新优惠券状态为已使用
+        if (this.data.selectedCoupon) {
+          try {
+            // 使用services中的方法更新优惠券状态
+            await updateUserCoupon({
+              id: this.data.selectedCoupon._id,
+              status: 2, // 2-已使用
+              useTime: new Date().getTime(),
+              Order: orderId
+            });
+          } catch (e) {
+            console.error('更新优惠券状态失败', e);
+            // 继续处理订单，不中断流程
+          }
+        }
+        
+        // 更新订单状态
         await updateOrderStatus({ orderId, status: ORDER_STATUS.TO_SEND });
         this.toast('支付成功');
       } catch (e) {
@@ -223,55 +251,108 @@ Page({
     }
   },
 
-  async submitOrderFromCart() {
-    /**
-     * 1.创建订单
-     * 2.创建订单项
-     * 3.删除购物车项
-     */
+  async submitOrder() {
+    const { userAddress, selectedCoupon, totalSalePrice, totalPayAmount, couponDiscountAmount } = this.data;
+    if (!userAddress) {
+      Toast({
+        context: this,
+        selector: '#t-toast',
+        message: '请选择收货地址',
+        icon: '',
+      });
+      return;
+    }
+    
+    // 根据选择方式处理订单创建
+    if (this.type === 'cart') {
+      this.submitOrderFromCart();
+    } else {
+      this.submitOrderFromDirect();
+    }
+  },
 
-    const { cartItems, userAddress } = this.data;
-    const { id: orderId } = await createOrder({ status: ORDER_STATUS.TO_PAY, addressId: userAddress._id });
+  async submitOrderFromCart() {
+    const { cartItems, userAddress, selectedCoupon, totalSalePrice, totalPayAmount, couponDiscountAmount } = this.data;
 
     try {
-      await Promise.all(cartItems.map(async (cartItem) => {
-        await createOrderItemFromCartItem(cartItem, orderId);
-      }));
+      // 计算实际支付金额
+      const finalAmount = selectedCoupon ? totalPayAmount : totalSalePrice;
+      
+      // 创建订单参数 - 修改参数名称与createOrder函数定义一致
+      const orderParams = { 
+        status: ORDER_STATUS.TO_PAY, 
+        addressId: userAddress._id,
+        // 修改参数名称
+        totalAmount: totalSalePrice,            // 原来是originalAmount
+        payAmount: finalAmount,                 // 原来是pay_amount
+        couponDiscountAmount: selectedCoupon ? couponDiscountAmount : 0
+      };
+      
+      // 添加优惠券关联
+      if (selectedCoupon) {
+        orderParams.userCouponId = selectedCoupon._id; // 修改为userCouponId
+      }
+      
+      // 创建订单
+      const { id: orderId } = await createOrder(orderParams);
 
       try {
-        await cartItems.map(async (cartItem) => {
-          await deleteCartItem({ cartItemId: cartItem._id });
-          // any deletion should notify cart to fresh
-          cartShouldFresh();
-        });
-      } catch (e) {
-        console.error(e);
-        this.toast('删除购物车失败，请手动删除');
-        // do not return, continue to pay
-      }
+        await Promise.all(cartItems.map(async (cartItem) => {
+          await createOrderItemFromCartItem(cartItem, orderId);
+        }));
 
-      const totalPrice = cartItems.reduce((acc, cur) => acc + cur.count * cur.sku.price, 0);
-      await this.payImpl(totalPrice, orderId);
+        try {
+          await cartItems.map(async (cartItem) => {
+            await deleteCartItem({ cartItemId: cartItem._id });
+            cartShouldFresh();
+          });
+        } catch (e) {
+          console.error(e);
+          this.toast('删除购物车失败，请手动删除');
+        }
+
+        // 使用优惠后的价格调用支付
+        await this.payImpl(finalAmount, orderId);
+      } catch (e) {
+        this.failedAndBack('创建订单失败', e);
+      }
     } catch (e) {
       this.failedAndBack('创建订单失败', e);
     }
   },
 
   async submitOrderFromDirect() {
-    /**
-     * 1.创建订单
-     * 2.创建订单项
-     */
-
-    const { directSku, userAddress, goodsList } = this.data;
+    const { directSku, userAddress, goodsList, selectedCoupon, totalSalePrice, totalPayAmount, couponDiscountAmount } = this.data;
     const goods = goodsList[0];
-    const { id: orderId } = await createOrder({ status: ORDER_STATUS.TO_PAY, addressId: userAddress._id });
-
+    
     try {
-      await createOrderItemFromSku({ count: goods.num, orderId, skuId: directSku._id });
-      const totalPrice = goods.price * goods.num;
+      // 准备订单参数 - 修改参数名称
+      const orderParams = { 
+        status: ORDER_STATUS.TO_PAY, 
+        addressId: userAddress._id,
+        // 修改参数名称
+        totalAmount: totalSalePrice,            // 原来是originalAmount
+        payAmount: selectedCoupon ? totalPayAmount : totalSalePrice,  // 原来是pay_amount
+        couponDiscountAmount: selectedCoupon ? couponDiscountAmount : 0
+      };
+      
+      // 修改优惠券参数名称
+      if (selectedCoupon) {
+        orderParams.userCouponId = selectedCoupon._id;  // 修改为userCouponId
+      }
+      
+      // 创建订单
+      const { id: orderId } = await createOrder(orderParams);
 
-      await this.payImpl(totalPrice, orderId);
+      try {
+        await createOrderItemFromSku({ count: goods.num, orderId, skuId: directSku._id });
+        
+        // 使用优惠后的价格调用支付
+        const finalAmount = selectedCoupon ? totalPayAmount : totalSalePrice;
+        await this.payImpl(finalAmount, orderId);
+      } catch (e) {
+        this.failedAndBack('创建订单失败', e);
+      }
     } catch (e) {
       this.failedAndBack('创建订单失败', e);
     }
@@ -283,30 +364,6 @@ Page({
     setTimeout(() => {
       wx.navigateBack();
     }, 1000);
-  },
-
-  // 提交订单
-  async submitOrder() {
-    const { userAddress } = this.data;
-    if (!userAddress) {
-      Toast({
-        context: this,
-        selector: '#t-toast',
-        message: '请添加收货地址',
-        duration: 2000,
-        icon: 'help-circle',
-      });
-      return;
-    }
-
-    if (this.type === 'cart') {
-      this.submitOrderFromCart();
-    } else if (this.type === 'direct') {
-      this.submitOrderFromDirect();
-    } else {
-      console.error('invalid type', this.type);
-      this.failedAndBack('初始化信息有误');
-    }
   },
 
   // 选择优惠券

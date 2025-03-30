@@ -1,0 +1,15 @@
+{
+  "name": "updateUserCoupon",
+  "version": "1.0.0",
+  "description": "更新用户优惠券状态",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cloudbase/node-sdk": "3.2",
+    "wx-server-sdk": "~2.4.0"
+  }
+} 

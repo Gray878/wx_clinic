@@ -29,11 +29,22 @@ export const orderStatusToName = (status) => Object.values(ORDER_STATUS_INFO).fi
  *
  * @param {{
  *   status: String,
- *   addressId: String
+ *   addressId: String,
+ *   userCouponId?: String,
+ *   couponDiscountAmount?: Number,
+ *   totalAmount: Number,
+ *   payAmount?: Number
  * }} param0
  * @returns
  */
-export async function createOrder({ status, addressId }) {
+export async function createOrder({ 
+  status, 
+  addressId, 
+  userCouponId, 
+  couponDiscountAmount, 
+  totalAmount, 
+  payAmount 
+}) {
   if (cloudbaseTemplateConfig.useMock) {
     const _id = createId();
     ORDER.push({
@@ -42,18 +53,34 @@ export async function createOrder({ status, addressId }) {
         _id: addressId,
       },
       _id,
-      createdAt: new Date().getTime()
+      createdAt: new Date().getTime(),
+      user_coupon: userCouponId ? { _id: userCouponId } : null,
+      coupon_discountAmount: couponDiscountAmount || 0,
+      total_amount: totalAmount,
+      pay_amount: payAmount || totalAmount
     });
     return { id: _id };
   }
+  
+  const orderData = {
+    status,
+    delivery_info: {
+      _id: addressId,
+    },
+    total_amount: totalAmount,
+    pay_amount: payAmount || totalAmount
+  };
+  
+  if (userCouponId) {
+    orderData.user_coupon = { _id: userCouponId };
+    orderData.coupon_discountAmount = couponDiscountAmount || 0;
+  }
+  
+  console.log('创建订单数据:', orderData);
+  
   return (
     await model()[ORDER_MODEL_KEY].create({
-      data: {
-        status,
-        delivery_info: {
-          _id: addressId,
-        },
-      },
+      data: orderData
     })
   ).data;
 }

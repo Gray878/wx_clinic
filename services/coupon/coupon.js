@@ -462,4 +462,30 @@ export async function fetchUserCouponsAlternative(status = 1) {
     console.error('获取优惠券列表失败', error);
     return [];
   }
-} 
+}
+
+// 更新用户优惠券状态
+export const updateUserCoupon = async ({ id, status, useTime, Order }) => {
+  if (!id) {
+    console.error('优惠券ID不能为空');
+    return Promise.reject(new Error('优惠券ID不能为空'));
+  }
+  
+  try {
+    const result = await wx.cloud.callFunction({
+      name: 'updateUserCoupon',
+      data: {
+        id,
+        status,
+        useTime: useTime || new Date().getTime(),
+        Order
+      }
+    });
+    console.log('更新优惠券状态结果:', result);
+    
+    return result.result;
+  } catch (error) {
+    console.error('更新优惠券状态失败', error);
+    throw error;
+  }
+}; 

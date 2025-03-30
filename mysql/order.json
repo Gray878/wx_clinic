@@ -1,6 +1,6 @@
 {
     "previewTableName": "lcap-shop_order-preview",
-    "publishCacheStatus": "ready",
+    "publishCacheStatus": "notready",
     "subType": "database",
     "schema": {
         "x-primary-column": "_id",
@@ -19,7 +19,7 @@
         "type": "object",
         "x-relatedType": "exist",
         "title": "电商订单",
-        "x-viewId": "view-6kjf82irnk",
+        "x-viewId": "view-6lwpgiwkf4",
         "required": [
             "status"
         ],
@@ -27,7 +27,7 @@
             "owner": {
                 "default": "",
                 "x-system": true,
-                "x-id": "ed8b3d4",
+                "x-id": "d218a12",
                 "name": "owner",
                 "format": "father-son",
                 "pattern": "",
@@ -41,10 +41,82 @@
                     "parentDataSourceName": "sys_user"
                 }
             },
+            "coupon_discountAmount": {
+                "x-required": false,
+                "default": 0,
+                "x-keyPath": "",
+                "x-id": "35ff7c27",
+                "format": "",
+                "description": "",
+                "type": "number",
+                "x-index": 49,
+                "title": "优惠券折扣金额",
+                "x-unique": false
+            },
+            "user_coupon": {
+                "x-keyPath": "",
+                "x-id": "5f81bcdf",
+                "format": "one-one",
+                "description": "",
+                "type": "object",
+                "x-index": 47,
+                "title": "用户优惠券记录",
+                "list": [
+                    {
+                        "x-id": "gpu5aygl",
+                        "name": "_id",
+                        "pId": "5f81bcdf",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                ],
+                "x-unique": true,
+                "required": [],
+                "x-parent": {
+                    "parentFieldKey": "Order",
+                    "parentFieldTitle": "订单",
+                    "parentDataSourceName": "user_coupons"
+                },
+                "x-required": false,
+                "name": "user_coupon",
+                "deleteWay": "doNothing",
+                "properties": {
+                    "_id": {
+                        "name": "_id",
+                        "title": "数据标识",
+                        "type": "string"
+                    }
+                }
+            },
+            "_departmentList": {
+                "default": "",
+                "x-system": true,
+                "x-id": "0d96897",
+                "format": "",
+                "name": "_departmentList",
+                "title": "所属部门",
+                "type": "array",
+                "x-index": 7,
+                "items": {
+                    "type": "string"
+                },
+                "x-unique": false
+            },
+            "pay_amount": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "c972497d",
+                "format": "",
+                "description": "",
+                "type": "number",
+                "x-index": 53,
+                "title": "实际支付金额",
+                "x-unique": false
+            },
             "createdAt": {
                 "default": 0,
                 "x-system": true,
-                "x-id": "3bd6d95",
+                "x-id": "124c984",
                 "format": "datetime",
                 "x-index": 2,
                 "type": "number",
@@ -54,7 +126,7 @@
             "createBy": {
                 "default": "",
                 "x-system": true,
-                "x-id": "47e9699",
+                "x-id": "45f535f",
                 "name": "createBy",
                 "format": "father-son",
                 "pattern": "",
@@ -85,7 +157,19 @@
                     "parentDataSourceName": "sys_user"
                 }
             },
+            "total_amount": {
+                "x-required": false,
+                "x-keyPath": "",
+                "x-id": "c83ee787",
+                "format": "",
+                "description": "",
+                "type": "number",
+                "x-index": 55,
+                "title": "商品原始总金额",
+                "x-unique": false
+            },
             "order_item": {
+                "x-id": "q4koyakp",
                 "name": "order_item",
                 "format": "one-many",
                 "deleteWay": "doNothing",
@@ -108,24 +192,10 @@
                     "parentDataSourceName": "shop_order_item"
                 }
             },
-            "_departmentList": {
-                "default": "",
-                "x-system": true,
-                "x-id": "07a83d8",
-                "format": "",
-                "name": "_departmentList",
-                "title": "所属部门",
-                "type": "array",
-                "x-index": 7,
-                "items": {
-                    "type": "string"
-                },
-                "x-unique": false
-            },
             "_openid": {
                 "default": "",
                 "x-system": true,
-                "x-id": "9dad524",
+                "x-id": "62bffe4",
                 "name": "_openid",
                 "format": "",
                 "pattern": "",
@@ -136,6 +206,7 @@
                 "x-unique": false
             },
             "delivery_info": {
+                "x-id": "7b832b9d",
                 "format": "many-one",
                 "name": "delivery_info",
                 "deleteWay": "doNothing",
@@ -158,7 +229,7 @@
             "_id": {
                 "default": "",
                 "x-system": true,
-                "x-id": "d0d6ebe",
+                "x-id": "f54b0ae",
                 "format": "",
                 "pattern": "",
                 "x-index": 1,
@@ -239,7 +310,7 @@
             "updatedAt": {
                 "default": 0,
                 "x-system": true,
-                "x-id": "9bc1399",
+                "x-id": "f351ccc",
                 "format": "datetime",
                 "x-index": 3,
                 "title": "更新时间",
@@ -255,12 +326,12 @@
     "tableNameRule": "has_lcap",
     "type": "database",
     "childDataSourceNames": null,
-    "updateTime": "2025-02-28T14:05:36",
+    "updateTime": "2025-03-29T11:41:35",
     "publishedTableName": "lcap-shop_order",
-    "id": "data-4x8b7suwY",
+    "id": "data-4yFKfTHee",
     "dbSourceType": "internal_mysql",
     "methods": [],
-    "fun": "{\"onlineVersion\": 6, \"previewVersion\": 5, \"onlinePublishAt\": 1740751536265, \"prviewPublishAt\": 1740751535813}",
+    "fun": "{\"onlineVersion\": 13, \"previewVersion\": 12, \"onlinePublishAt\": 1743248495909, \"prviewPublishAt\": 1743248495374}",
     "publishStatus": 1,
     "configuration": {}
 }

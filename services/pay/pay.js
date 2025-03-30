@@ -4,12 +4,15 @@
  * @returns
  */
 export async function pay(order) {
+  console.log(`支付订单 ${order.id}，金额 ${order.totalPrice}`);
+  
   try {
     const res = await wx.cloud.callFunction({
       // 云函数名称
       name: 'shop_pay',
       data: {
-        orderId: order.id
+        orderId: order.id,
+        totalPrice: order.totalPrice
       },
     });
     const paymentData = res.result?.data;
